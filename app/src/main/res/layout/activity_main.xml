@@ -8,8 +8,7 @@
         tools:context=".Activity.MainActivity">
 
     <LinearLayout android:layout_width="0dp"
-                  android:layout_height="70dp"
-                  android:layout_marginBottom="8dp"
+                  android:layout_height="94dp"
                   app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
                   android:layout_marginStart="80dp" app:layout_constraintEnd_toEndOf="parent"
                   android:layout_marginEnd="80dp"
@@ -18,23 +17,42 @@
                   android:orientation="horizontal"
                   android:gravity="center_horizontal|bottom"
     >
-        <ImageView android:layout_width="39dp" android:layout_height="62dp"
-                   android:src="@drawable/poke_card_1"/>
-        <ImageView android:layout_width="39dp" android:layout_height="62dp"
-                   android:layout_marginStart="-33dp"
-                   android:src="@drawable/poke_card_1"/>
-        <ImageView android:layout_width="39dp" android:layout_height="62dp"
-                   android:layout_marginStart="-33dp"
-                   android:src="@drawable/poke_card_1"/>
-        <ImageView android:layout_width="39dp" android:layout_height="62dp"
-                   android:layout_marginStart="-33dp"
-                   android:src="@drawable/poke_card_1"/>
-        <ImageView android:layout_width="39dp" android:layout_height="62dp"
-                   android:layout_marginStart="-33dp"
-                   android:src="@drawable/poke_card_1"/>
-        <ImageView android:layout_width="39dp" android:layout_height="62dp"
-                   android:layout_marginStart="-33dp"
-                   android:src="@drawable/poke_card_1"/>
+        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
+        <!--                   android:background="@drawable/card_img_bored"-->
+        <!--                   android:src="@drawable/poke_card_1"-->
+        <!--                   android:scaleType="fitCenter"-->
+        <!--        />-->
+
+        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
+        <!--                   android:layout_marginStart="-33dp"-->
+        <!--                   android:src="@drawable/poke_card_1"-->
+        <!--                   android:background="@drawable/card_img_bored"-->
+        <!--                   android:scaleType="fitCenter"-->
+        <!--        />-->
+        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
+        <!--                   android:layout_marginStart="-33dp"-->
+        <!--                   android:src="@drawable/poke_card_1"-->
+        <!--                   android:background="@drawable/card_img_bored"-->
+        <!--                   android:scaleType="fitCenter"-->
+        <!--        />-->
+        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
+        <!--                   android:layout_marginStart="-33dp"-->
+        <!--                   android:src="@drawable/poke_card_1"-->
+        <!--                   android:background="@drawable/card_img_bored"-->
+        <!--                   android:scaleType="fitCenter"-->
+        <!--        />-->
+        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
+        <!--                   android:layout_marginStart="-33dp"-->
+        <!--                   android:src="@drawable/poke_card_1"-->
+        <!--                   android:background="@drawable/card_img_bored"-->
+        <!--                   android:scaleType="fitCenter"-->
+        <!--        />-->
+        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
+        <!--                   android:layout_marginStart="-33dp"-->
+        <!--                   android:src="@drawable/poke_card_1"-->
+        <!--                   android:background="@drawable/card_img_bored"-->
+        <!--                   android:scaleType="fitCenter"-->
+        <!--        />-->
     </LinearLayout>
 
     <LinearLayout android:layout_width="70dp" android:layout_height="0dp"
@@ -46,7 +64,7 @@
                   android:orientation="vertical"
     />
 
-    <LinearLayout android:layout_width="88dp" android:layout_height="0dp"
+    <LinearLayout android:layout_width="70dp" android:layout_height="0dp"
                   android:id="@+id/RightPlayerPokeCollection"
                   android:background="#20EE09"
                   app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"

@@ -1,6 +1,7 @@
 package com.nemesiss.chuodaidi.Utils;
 
 import android.net.Uri;
+import com.nemesiss.chuodaidi.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.BuildConfig;
 
 public class AppUtil {
@@ -10,5 +11,10 @@ public class AppUtil {
     public static Uri ParseResourceIdToUri(int resId)
     {
         return Uri.parse(RESOURCE + packageName + "/" + resId);
+    }
+
+    public static int Dp2Px(int dp)
+    {
+        return (int)(ChuoDaidiActivity.getScale() * dp + 0.5f);
     }
 }
