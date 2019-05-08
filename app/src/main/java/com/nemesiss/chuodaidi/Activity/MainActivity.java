@@ -2,7 +2,6 @@ package com.nemesiss.chuodaidi.Activity;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,6 +13,7 @@ import com.nemesiss.chuodaidi.R;
 import com.nemesiss.chuodaidi.Utils.AppUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends ChuoDaidiActivity {
@@ -22,6 +22,7 @@ public class MainActivity extends ChuoDaidiActivity {
     private LinearLayout SelfShowPokeContainer;
     private List<ImageView> imageViewList;
     private boolean[] CardStatus;
+    private boolean[] CardMoveLock;
 
     // Card Container data:
 
@@ -40,6 +41,7 @@ public class MainActivity extends ChuoDaidiActivity {
         setContentView(R.layout.activity_main);
 
         CardStatus = new boolean[13];
+        CardMoveLock = new boolean[13];
         imageViewList = new ArrayList<>();
         SelfPokeContainer = findViewById(R.id.SelfPokeCollection);
         SelfShowPokeContainer = findViewById(R.id.SelfShowPokeCollection);
@@ -51,36 +53,33 @@ public class MainActivity extends ChuoDaidiActivity {
         });
 
         SelfPokeContainer.setOnTouchListener(new View.OnTouchListener() {
+            // ACTION_DOWN 0
+            // ACTION_UP 1
+            // ACTION_MOVE 2
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-
-                    boolean[] IsProcessed = new boolean[13];
-
-                    int evX = Math.round(event.getX());
-                    int evY = Math.round(event.getY());
-
-
-                    int childCount = SelfPokeContainer.getChildCount();
-                    for (int i = 0; i < childCount; i++) {
-                        View child = SelfPokeContainer.getChildAt(i);
-                        int left = child.getLeft();
-                        int right = child.getRight();
-                        int top = child.getTop();
-                        int bottom = child.getBottom();
-                        if(left <= evX && evX <= right && top <= evY &&  evY <= bottom)
-                        {
-                            // touch到了
-                            Log.d("MainActivity","触摸到"+i+"牌");
-                            if(!IsProcessed[i]){
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:{
+                        Arrays.fill(CardMoveLock,false);
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_MOVE:{
+                        int evX = Math.round(event.getX());
+                        int evY = Math.round(event.getY());
+                        int childCount = SelfPokeContainer.getChildCount();
+                        for (int i = 0; i < childCount; i++) {
+                            if(DetectCardSelected(i,evX,evY) && !CardMoveLock[i]) {
                                 HandleCardSelected(i);
-                                IsProcessed[i] = true;
+                                CardMoveLock[i] = true;
                             }
                         }
+                        break;
                     }
                 }
-                return true ;
+                return true;
             }
+
         });
     }
 
@@ -115,7 +114,7 @@ public class MainActivity extends ChuoDaidiActivity {
     }
     private int MeasureMarginBottom(int height)
     {
-        return (int)(-height*r1);
+        return (int)(height*r1);
     }
     private int MeasureMarginStart(int width)
     {
@@ -126,13 +125,34 @@ public class MainActivity extends ChuoDaidiActivity {
         return (int)(-(1-r2/2)*height);
     }
 
+    private boolean DetectCardSelected(int position, int evX, int evY)
+    {
+        int end = imageViewList.size() - 1;
+        ImageView child = imageViewList.get(position);
+        int left = child.getLeft();
+        int right = child.getRight();
+        int top = child.getTop();
+        int bottom = child.getBottom();
+        if(position == end) {
+             return (left <= evX && evX <= right && top <= evY &&  evY <= bottom);
+        }
+        else {
+            int width = child.getWidth();
+            int marginStart = width/2;
+            right = right - marginStart;
+            return (left <= evX && evX <= right && top <= evY &&  evY <= bottom);
+        }
+    }
+
     private void HandleCardSelected(int position)
     {
         ImageView iv = imageViewList.get(position);
         boolean status = CardStatus[position];
         int height = iv.getHeight();
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)iv.getLayoutParams();
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) iv.getLayoutParams();
         lp.bottomMargin = !status ? MeasureMarginBottom(height) : 0;
+
         iv.setLayoutParams(lp);
         CardStatus[position] = !status;
     }
