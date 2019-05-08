@@ -1,7 +1,7 @@
-package com.nemesiss.chuodaidi.Utils;
+package com.nemesiss.chuodaidi.Android.Utils;
 
 import android.net.Uri;
-import com.nemesiss.chuodaidi.Activity.ChuoDaidiActivity;
+import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.BuildConfig;
 
 public class AppUtil {

@@ -5,10 +5,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activity.MainActivity">
+        tools:context=".Android.Activity.MainActivity">
 
     <LinearLayout android:layout_width="0dp"
-                  android:layout_height="94dp"
+                  android:layout_height="95dp"
                   app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
                   android:layout_marginStart="80dp" app:layout_constraintEnd_toEndOf="parent"
                   android:layout_marginEnd="80dp"
@@ -17,42 +17,6 @@
                   android:orientation="horizontal"
                   android:gravity="center_horizontal|bottom"
     >
-        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
-        <!--                   android:background="@drawable/card_img_bored"-->
-        <!--                   android:src="@drawable/poke_card_1"-->
-        <!--                   android:scaleType="fitCenter"-->
-        <!--        />-->
-
-        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
-        <!--                   android:layout_marginStart="-33dp"-->
-        <!--                   android:src="@drawable/poke_card_1"-->
-        <!--                   android:background="@drawable/card_img_bored"-->
-        <!--                   android:scaleType="fitCenter"-->
-        <!--        />-->
-        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
-        <!--                   android:layout_marginStart="-33dp"-->
-        <!--                   android:src="@drawable/poke_card_1"-->
-        <!--                   android:background="@drawable/card_img_bored"-->
-        <!--                   android:scaleType="fitCenter"-->
-        <!--        />-->
-        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
-        <!--                   android:layout_marginStart="-33dp"-->
-        <!--                   android:src="@drawable/poke_card_1"-->
-        <!--                   android:background="@drawable/card_img_bored"-->
-        <!--                   android:scaleType="fitCenter"-->
-        <!--        />-->
-        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
-        <!--                   android:layout_marginStart="-33dp"-->
-        <!--                   android:src="@drawable/poke_card_1"-->
-        <!--                   android:background="@drawable/card_img_bored"-->
-        <!--                   android:scaleType="fitCenter"-->
-        <!--        />-->
-        <!--        <ImageView android:layout_width="39dp" android:layout_height="62dp"-->
-        <!--                   android:layout_marginStart="-33dp"-->
-        <!--                   android:src="@drawable/poke_card_1"-->
-        <!--                   android:background="@drawable/card_img_bored"-->
-        <!--                   android:scaleType="fitCenter"-->
-        <!--        />-->
     </LinearLayout>
 
     <LinearLayout android:layout_width="70dp" android:layout_height="0dp"

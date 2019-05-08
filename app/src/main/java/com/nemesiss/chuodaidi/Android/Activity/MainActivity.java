@@ -1,16 +1,15 @@
-package com.nemesiss.chuodaidi.Activity;
+package com.nemesiss.chuodaidi.Android.Activity;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.nemesiss.chuodaidi.R;
-import com.nemesiss.chuodaidi.Utils.AppUtil;
+import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +24,7 @@ public class MainActivity extends ChuoDaidiActivity {
     private boolean[] CardMoveLock;
 
     // Card Container data:
-
+    //Wa Emm Zei
     private int CardOriginalWidth = 250;
     private int CardOriginalHeight = 400;
     private float CardWHRatio = (float)CardOriginalWidth / CardOriginalHeight;

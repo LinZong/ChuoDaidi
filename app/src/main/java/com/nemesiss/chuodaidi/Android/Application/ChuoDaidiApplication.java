@@ -1,4 +1,4 @@
-package com.nemesiss.chuodaidi.Application;
+package com.nemesiss.chuodaidi.Android.Application;
 
 import android.app.Application;
 import android.content.Context;

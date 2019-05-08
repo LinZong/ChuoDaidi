@@ -1,4 +1,4 @@
-package com.nemesiss.chuodaidi.Activity;
+package com.nemesiss.chuodaidi.Android.Activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
