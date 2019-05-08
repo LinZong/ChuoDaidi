@@ -1,4 +1,4 @@
-package com.nemesiss.chuodaidi;
+package com.nemesiss.chuodaidi.Activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -13,4 +13,9 @@ public class ChuoDaidiActivity extends AppCompatActivity
         super.onCreate(savedInstanceState, persistentState);
         Scale = getResources().getDisplayMetrics().density;
     }
+
+    public static float getScale() {
+        return Scale;
+    }
+
 }

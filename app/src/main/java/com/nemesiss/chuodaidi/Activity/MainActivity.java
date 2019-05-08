@@ -1,8 +1,9 @@
-package com.nemesiss.chuodaidi;
+package com.nemesiss.chuodaidi.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import com.nemesiss.chuodaidi.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,4 +26,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void MeasurePokes()
+    {
+
+    }
 }
