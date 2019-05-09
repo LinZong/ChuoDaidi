@@ -1,5 +1,7 @@
 package com.nemesiss.chuodaidi.Game.Model;
 
+import org.jetbrains.annotations.Nullable;
+
 public class Card {
     private String Point;
     private Pattern pattern;
@@ -24,6 +26,14 @@ public class Card {
         Club // ♣️
         // 方块  梅花  红心  黑桃  (从小到大)
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj == null) return false;
+        if(obj instanceof Card) {
+            Card right = (Card) obj;
+            return this.getPoint().equals(right.getPoint()) && this.getPattern().equals(right.getPattern());
+        }
+        return true;
+    }
 }
-
-
