@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CardDesk">
+        <attr name="card_wh_ratio" format="float"/>
+        <attr name="card_r1" format="float"/>
+        <attr name="card_r2" format="float"/>
+    </declare-styleable>
+</resources>

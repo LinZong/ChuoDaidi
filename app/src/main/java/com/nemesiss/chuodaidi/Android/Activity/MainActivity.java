@@ -52,9 +52,6 @@ public class MainActivity extends ChuoDaidiActivity {
         });
 
         SelfPokeContainer.setOnTouchListener(new View.OnTouchListener() {
-            // ACTION_DOWN 0
-            // ACTION_UP 1
-            // ACTION_MOVE 2
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {

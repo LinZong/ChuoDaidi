@@ -7,7 +7,7 @@ import java.util.List;
 public interface Player {
     List<Card> GetHandCards();
     void InitSetHandCards();
-    void ShowCard(List<Card> willShowCards);
+    void ShowCard(List<Integer> CardIndex);
     void NotifyTakeTurn();
     void HandleTakeTurn();
 }
