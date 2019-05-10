@@ -29,7 +29,7 @@ public class AppUtil {
         List<Integer> drawableList = new ArrayList<>();
         for (Card c : cards) {
             Card.Pattern pattern = c.getPattern();
-            String val = c.getPoint();
+            String val = c.getPoint().toLowerCase();
             String patternName = pattern.name().toLowerCase();
 
             Field field = R.drawable.class.getField("poke_card_" + val + "_" + patternName);
