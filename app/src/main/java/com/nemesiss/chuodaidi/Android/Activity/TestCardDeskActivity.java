@@ -35,6 +35,14 @@ public class TestCardDeskActivity extends ChuoDaidiActivity {
         cardList.add(new Card("J", Card.Pattern.Spade));
         cardList.add(new Card("Q", Card.Pattern.Heart));
         cardList.add(new Card("2", Card.Pattern.Club));
+        cardList.add(new Card("2", Card.Pattern.Club));
+        cardList.add(new Card("3", Card.Pattern.Diamond));
+        cardList.add(new Card("J", Card.Pattern.Spade));
+        cardList.add(new Card("Q", Card.Pattern.Heart));
+        cardList.add(new Card("2", Card.Pattern.Club));
+        cardList.add(new Card("J", Card.Pattern.Spade));
+        cardList.add(new Card("Q", Card.Pattern.Heart));
+        cardList.add(new Card("2", Card.Pattern.Club));
         self = new LocalPlayer();
         self.InitSetHandCards(cardList);
 
@@ -45,7 +53,9 @@ public class TestCardDeskActivity extends ChuoDaidiActivity {
     @OnClick({R.id.PickupPoke})
     public void PickPoke(View v)
     {
-        cardDesk.SelectCard(1,cardList);
+//        cardDesk.SelectCard(1,cardList);
+//        cardDesk.SelectCard(2,cardList);
+//        cardDesk.SelectCard(3,cardList);
     }
 
     @OnClick({R.id.EnterNewTurn})

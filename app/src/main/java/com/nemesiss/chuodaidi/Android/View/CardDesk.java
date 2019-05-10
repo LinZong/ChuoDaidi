@@ -227,7 +227,8 @@ public class CardDesk extends ConstraintLayout {
 
     private int MeasureVerticalCardMarginTop(int CardHeight, int ContainerHeight) {
         //标准 return
-        return -(int) ((CardHeight - ((ContainerHeight - CardHeight) / 13)) + 0.5f);
+        //return -(int) ((CardHeight - ((ContainerHeight - CardHeight) / 13)) + 0.5f);
+        return (int)(-(0.85f)*CardHeight);
     }
 
     private boolean DetectCardSelected(int position, int evX, int evY) {
@@ -276,7 +277,7 @@ public class CardDesk extends ConstraintLayout {
                 int marginStart = MeasureHorizontalMarginStart(cardWidth);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(cardWidth, cardHeight);
                 if (i > 0) {
-                    lp.setMarginStart(marginStart);
+                    lp.setMarginStart((int)(marginStart * 1.2f));
                 }
                 SelfCardImageList.add(iv);
                 PokeCollections[SELF].addView(iv, lp);
@@ -295,39 +296,39 @@ public class CardDesk extends ConstraintLayout {
     private void LoadOtherPlayerCardsAsImageToContainer(int count, int position) {
         //
         Uri bgUri = AppUtil.ParseResourceIdToUri(R.drawable.poke_back);
-        switch (position) {
-            case LEFT:
-            case RIGHT: {
-                for (int i = 0; i < count; i++) {
-                    ImageView iv = CreatePokeImageView();
-                    Glide.with(mContext).load(bgUri).into(iv);
-                    int width = MeasureVerticalCardWidth(TwoSideContainerWidth);
-                    int height = MeasureVerticalCardHeight(TwoSideContainerWidth);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
+
+        for (int i = 0; i < count; i++)
+        {
+            ImageView iv = CreatePokeImageView();
+            Glide.with(mContext).load(bgUri).into(iv);
+            int width,height;
+            LinearLayout.LayoutParams lp = null;
+            switch (position) {
+                case LEFT:
+                case RIGHT: {
+                    width = MeasureVerticalCardWidth(TwoSideContainerWidth);
+                    height = MeasureVerticalCardHeight(TwoSideContainerWidth);
+                    lp = new LinearLayout.LayoutParams(width, height);
                     if (i > 0) {
                         lp.topMargin = MeasureVerticalCardMarginTop(height, TwoSideContainerHeight);
                     }
-                    PokeCollections[position].addView(iv, lp);
+                    break;
                 }
-                break;
-            }
-            case TOP: {
-                for (int i = 0; i < count; i++) {
+                case TOP: {
 
-                    ImageView iv = CreatePokeImageView();
-                    Glide.with(mContext).load(bgUri).into(iv);
-
-                    int height = (TopContainerHeight);
-                    int width = MeasureHorizontalCardWidth(height) + 1;
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
+                    height = (TopContainerHeight);
+                    width = MeasureHorizontalCardWidth(height) + 1;
+                    lp = new LinearLayout.LayoutParams(width, height);
                     if (i > 0) {
-                        lp.leftMargin = MeasureHorizontalMarginStart(width);
+                        lp.leftMargin = (int)( MeasureHorizontalMarginStart(width) * 1.3f);
                     }
-                    PokeCollections[TOP].addView(iv, lp);
+                    break;
                 }
-                break;
             }
+            PokeCollections[position].addView(iv, lp);
         }
+
+
     }
 
     private ImageView CreatePokeImageView() {
@@ -366,22 +367,6 @@ public class CardDesk extends ConstraintLayout {
     private void PutCardToShowContainer(int position, List<Card> cards) {
         try {
             List<Integer> drawRes = AppUtil.ConvertCardToDrawable(cards);
-//                    for (int i = 0; i < cards.size(); i++) {
-//                        ImageView iv = CreatePokeImageView();
-//                        Glide.with(mContext).load(drawRes.get(i)).into(iv);
-//                        int height = (HorizontalShowContainerHeight);
-//                        int width = MeasureHorizontalCardWidth(height);
-//                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
-//                        if (i > 0) {
-//                            lp.leftMargin = MeasureHorizontalMarginStart(width);
-//                        }
-//                        else {
-//                            lp.leftMargin = 0;
-//                        }
-//                        ShowPokeCollections[position].addView(iv,lp);
-//                    }
-            // 都是牌的背面，只要随便Remove掉足够数量的牌即可
-            // PokeCollections[position].removeViews(0, cards.size());
 
             for (int i = 0; i < cards.size(); i++) {
                 ImageView iv = CreatePokeImageView();
@@ -391,7 +376,7 @@ public class CardDesk extends ConstraintLayout {
                 int width = MeasureHorizontalCardWidth(height);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
                 if (i > 0) {
-                    lp.leftMargin = MeasureHorizontalMarginStart(width);
+                    lp.leftMargin = (int)( MeasureHorizontalMarginStart(width) * 1.3f);
                 } else {
                     lp.leftMargin = 0;
                 }
