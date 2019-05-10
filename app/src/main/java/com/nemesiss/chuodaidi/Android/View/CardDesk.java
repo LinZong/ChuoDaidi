@@ -3,7 +3,6 @@ package com.nemesiss.chuodaidi.Android.View;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.media.Image;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
@@ -21,25 +20,24 @@ import com.nemesiss.chuodaidi.R;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
 
 public class CardDesk extends ConstraintLayout {
 
     // View控制相关变量
-    private float CardWHRatio;
-    private float r1;
-    private float r2;
+    private float CardWHRatio; // 扑克牌  宽/长  的比值
+    private float r1; // 花色部分宽/牌宽
+    private float r2; // 花色部分高/牌高
 
     // 手牌区容器长宽控制
-    private int SelfPokeContainerHeight;
-    private int SelfPokeContainerWidth;
+    private int SelfPokeContainerHeight; // 手牌区域容器高度
+    private int SelfPokeContainerWidth; // 手牌区域容器宽度
 
     // 其他玩家不可见手牌长宽控制
-    private int TwoSideContainerHeight;
-    private int TwoSideContainerWidth;
+    private int TwoSideContainerHeight; // 两边纵向手牌区域高度
+    private int TwoSideContainerWidth; // 两边纵向手牌区域宽度
 
-    private int TopContainerHeight;
-    private int TopContainerWidth;
+    private int TopContainerHeight; //顶部手牌区域高度
+    private int TopContainerWidth;  // -------  宽度
 
     // 出牌区容器长宽控制
     private int HorizontalShowContainerWidth;
@@ -49,22 +47,29 @@ public class CardDesk extends ConstraintLayout {
     private int VerticalShowContainerHeight;
 
     // 牌面显示控制变量
-    private List<Boolean> SelfCardStatus;
-    private List<Boolean> SelfCardMoveLock;
+    private List<Boolean> SelfCardStatus; // 当前玩家手牌选中状态，选中为true，不选为false
+    private List<Boolean> SelfCardMoveLock; // 防止触摸事件重复检测的辅助属性
 
 
-    private List<ImageView> SelfCardImageList;
+    private List<ImageView> SelfCardImageList;  // 存玩家手中牌面的ImageView
 
-    private List<Card>[] AllHadShownCard;
+    private List<Card>[] AllHadShownCard;  // 存本轮次中所有已经出的牌
 
 
-    private static final int SELF = 0, RIGHT = 1, TOP = 2, LEFT = 3;
+    // 四个方位玩家的代号（存取数组时用）
+    public static final int SELF = 0, RIGHT = 1, TOP = 2, LEFT = 3;
+
+    // 存手牌的容器
     private LinearLayout[] PokeCollections;// 0 1 2 3 Self, Right, Top, Left
+    // 存出牌的容器
     private LinearLayout[] ShowPokeCollections;
 
     private Context mContext;
 
+    //  是否正在测量子容器的宽高
     boolean IsMeasuringChildView = true;
+
+    // 等待CardDesk完成测量子容器大小的时候所需要的数据结构
     private EventProxy<String> AllMeasureChildViewTask;
     private Queue<Runnable> PendingOnMeasureChildView = new LinkedList<>();
 
@@ -118,6 +123,7 @@ public class CardDesk extends ConstraintLayout {
             }
         }, "self", "right", "top", "show_self");
     }
+
 
     @SuppressLint("ClickableViewAccessibility")
     private void Init() {
@@ -198,7 +204,7 @@ public class CardDesk extends ConstraintLayout {
     }
 
 
-    // 计算牌的位置
+    // 计算横向牌的大小
     private int MeasureHorizontalCardHeight(int ContainerHeight) {
         return (int) (ContainerHeight / (1 + r1));
     }
@@ -207,6 +213,7 @@ public class CardDesk extends ConstraintLayout {
         return (int) (CardHeight * CardWHRatio);
     }
 
+    // 计算横向牌应该重叠多少
     private int MeasureHorizontalMarginBottom(int CardHeight) {
         return (int) (CardHeight * r1);
     }
@@ -217,6 +224,8 @@ public class CardDesk extends ConstraintLayout {
         return (int) (-(0.5f) * CardWidth);
     }
 
+
+    // 计算纵向牌大小
     private int MeasureVerticalCardHeight(int VerticalContainerWidth) {
         return (int) (VerticalContainerWidth * (1f / CardWHRatio));
     }
@@ -225,6 +234,7 @@ public class CardDesk extends ConstraintLayout {
         return (int) (VerticalContainerWidth);
     }
 
+    // 计算
     private int MeasureVerticalCardMarginTop(int CardHeight, int ContainerHeight) {
         //标准 return
         //return -(int) ((CardHeight - ((ContainerHeight - CardHeight) / 13)) + 0.5f);

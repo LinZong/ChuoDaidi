@@ -29,38 +29,6 @@ public class TestCardDeskActivity extends ChuoDaidiActivity {
         setContentView(R.layout.activity_test_card_desk);
         ButterKnife.bind(this);
 
-
-        cardList.add(new Card("2", Card.Pattern.Club));
-        cardList.add(new Card("3", Card.Pattern.Diamond));
-        cardList.add(new Card("J", Card.Pattern.Spade));
-        cardList.add(new Card("Q", Card.Pattern.Heart));
-        cardList.add(new Card("2", Card.Pattern.Club));
-        cardList.add(new Card("2", Card.Pattern.Club));
-        cardList.add(new Card("3", Card.Pattern.Diamond));
-        cardList.add(new Card("J", Card.Pattern.Spade));
-        cardList.add(new Card("Q", Card.Pattern.Heart));
-        cardList.add(new Card("2", Card.Pattern.Club));
-        cardList.add(new Card("J", Card.Pattern.Spade));
-        cardList.add(new Card("Q", Card.Pattern.Heart));
-        cardList.add(new Card("2", Card.Pattern.Club));
-        self = new LocalPlayer();
-        self.InitSetHandCards(cardList);
-
-        cardDesk.NewCompetition(self);
-
     }
 
-    @OnClick({R.id.PickupPoke})
-    public void PickPoke(View v)
-    {
-//        cardDesk.SelectCard(1,cardList);
-//        cardDesk.SelectCard(2,cardList);
-//        cardDesk.SelectCard(3,cardList);
-    }
-
-    @OnClick({R.id.EnterNewTurn})
-    public void NT(View v)
-    {
-        cardDesk.NewTurn();
-    }
 }

@@ -2,9 +2,11 @@ package com.nemesiss.chuodaidi.Game.Model;
 
 import org.jetbrains.annotations.Nullable;
 
-public class Card {
-    private String Point;
-    private Pattern pattern;
+import java.io.Serializable;
+
+public class Card implements Serializable {
+    private String Point;// 点数
+    private Pattern pattern;// 花色
     public Card(String point,Pattern patt)
     {
         Point = point;
