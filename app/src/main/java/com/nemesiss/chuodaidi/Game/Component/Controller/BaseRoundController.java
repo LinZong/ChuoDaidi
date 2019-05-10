@@ -14,4 +14,6 @@ public interface BaseRoundController {
     void HandleGameSettle(int Who);
 
     Handler MessageHandler = null;
+
+    Handler GetMessageHandler();
 }

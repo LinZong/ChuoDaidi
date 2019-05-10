@@ -9,8 +9,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.Utils.EventProxy;
@@ -63,6 +65,7 @@ public class CardDesk extends ConstraintLayout {
     private LinearLayout[] PokeCollections;// 0 1 2 3 Self, Right, Top, Left
     // 存出牌的容器
     private LinearLayout[] ShowPokeCollections;
+    private TextView[] NotShowTextViews;
 
     private Context mContext;
 
@@ -72,6 +75,18 @@ public class CardDesk extends ConstraintLayout {
     // 等待CardDesk完成测量子容器大小的时候所需要的数据结构
     private EventProxy<String> AllMeasureChildViewTask;
     private Queue<Runnable> PendingOnMeasureChildView = new LinkedList<>();
+
+
+
+    // 玩家手牌控制面板
+    private LinearLayout SelfPokeControlPanel;
+    // 出牌
+    private Button ShowCard;
+    // 不出
+    private Button PassCard;
+
+
+    private Player Self;
 
     public CardDesk(Context context) {
         super(context);
@@ -125,24 +140,45 @@ public class CardDesk extends ConstraintLayout {
     }
 
 
+    public void ShowPokeControlPanel() {
+        SelfPokeControlPanel.setVisibility(VISIBLE);
+    }
+
+    public void HidePokeControlPanel() {
+        SelfPokeControlPanel.setVisibility(GONE);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void Init() {
         // 把LinearLayout存到数组中，索引用
+
+        SelfPokeControlPanel = findViewById(R.id.SelfPokeControlPanel);
+        ShowCard = findViewById(R.id.PickCard);
+        PassCard = findViewById(R.id.PassCard);
+
+        ShowCard.setOnClickListener((v) -> SelectCard(Self));
+        PassCard.setOnClickListener((v) -> SelectNoCard(Self));
 
         PokeCollections = new LinearLayout[4];
         ShowPokeCollections = new LinearLayout[4];
 
         PokeCollections[SELF] = findViewById(R.id.SelfPokeCollection);
         ShowPokeCollections[SELF] = findViewById(R.id.SelfShowPokeCollection);
+        NotShowTextViews[SELF] = findViewById(R.id.SelfNotShow);
 
         PokeCollections[RIGHT] = findViewById(R.id.RightPlayerPokeCollection);
         ShowPokeCollections[RIGHT] = findViewById(R.id.RightPlayerShowPokeCollection);
+        NotShowTextViews[RIGHT] = findViewById(R.id.RightNotShow);
+
 
         PokeCollections[LEFT] = findViewById(R.id.LeftPlayerPokeCollection);
         ShowPokeCollections[LEFT] = findViewById(R.id.LeftPlayerShowPokeCollection);
+        NotShowTextViews[LEFT] = findViewById(R.id.LeftNotShow);
 
         PokeCollections[TOP] = findViewById(R.id.TopPlayerPokeCollection);
         ShowPokeCollections[TOP] = findViewById(R.id.TopPlayerShowPokeCollection);
+        NotShowTextViews[TOP] = findViewById(R.id.TopNotShow);
+
 
         //post拿到计算完成后的宽高
 
@@ -176,7 +212,6 @@ public class CardDesk extends ConstraintLayout {
 
         // 设置自己牌组触摸事件
         PokeCollections[SELF].setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -404,12 +439,17 @@ public class CardDesk extends ConstraintLayout {
         }
     }
 
+    public void SelectNoCard(Player self)
+    {
+        self.ShowCard(new ArrayList<>());
+        NotShowTextViews[SELF].setVisibility(VISIBLE);
+    }
+
     public void SelectCard(Player self) {
         // 此函数用于我方出牌, 牌面选择完成之后内部调用有参的SelectCard显示出牌信息
 
         // Get all selected card
         List<Card> PlayerAllCard = self.GetHandCards();
-
         List<ImageView> Selectediv = new ArrayList<>();
         List<Integer> SelectedCardIndex = new ArrayList<>();
         List<Card> SelectedCard = new ArrayList<>();
@@ -422,7 +462,6 @@ public class CardDesk extends ConstraintLayout {
                 SelectedCard.add(PlayerAllCard.get(i));
             }
         }
-
         Collections.fill(SelfCardStatus, false);
         for (int i = 0; i < SelectedCardIndex.size(); i++) {
             SelfCardStatus.remove(0);
@@ -431,10 +470,11 @@ public class CardDesk extends ConstraintLayout {
         if (!Selectediv.isEmpty()) {
             PutCardToShowContainer(Selectediv);
             AllHadShownCard[SELF].addAll(SelectedCard);
+            self.ShowCard(SelectedCardIndex);
         } else {
             // TODO 显示不出
+            SelectNoCard(Self);
         }
-        self.ShowCard(SelectedCardIndex);
     }
 
     public void SelectCard(int position, List<Card> cards) {
@@ -442,7 +482,7 @@ public class CardDesk extends ConstraintLayout {
             PutCardToShowContainer(position, cards);
             AllHadShownCard[position].addAll(cards);
         } else {
-            // TODO 显示不出
+            NotShowTextViews[position].setVisibility(VISIBLE);
         }
     }
 
@@ -455,10 +495,12 @@ public class CardDesk extends ConstraintLayout {
         for (int i = 0; i < 4; i++) {
             AllHadShownCard[i].clear();
             ShowPokeCollections[i].removeAllViews();
+            NotShowTextViews[i].setVisibility(GONE);
         }
     }
 
     public void NewCompetition(Player self) {
+        Self = self;
         SelfCardImageList = new ArrayList<>();
         SelfCardStatus = new ArrayList<>(13);
         SelfCardMoveLock = new ArrayList<>(13);

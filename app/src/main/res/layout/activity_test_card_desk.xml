@@ -87,22 +87,74 @@
                       app:layout_constraintTop_toBottomOf="@+id/TopPlayerPokeCollection"
                       app:layout_constraintEnd_toEndOf="@+id/TopPlayerPokeCollection"
                       app:layout_constraintStart_toStartOf="@+id/TopPlayerPokeCollection"/>
-        <Button
-                android:text="出牌"
-                android:layout_width="84dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/PickupPoke"
-                tools:layout_editor_absoluteY="160dp"
-                tools:layout_editor_absoluteX="231dp"/>
-        <Button
-                android:text="清除"
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/SelfPokeControlPanel"
+                      android:visibility="gone"
+                      android:orientation="horizontal" tools:layout_editor_absoluteY="246dp"
+                      app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                      app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp">
+            <Button
+                    android:text="出牌"
+                    android:layout_width="84dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PickCard"
+                    android:layout_marginEnd="8dp"
+            />
+            <Button
+                    android:text="清除"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PassCard"
+                    android:layout_marginStart="8dp"
+            />
+        </LinearLayout>
+        <TextView
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="@id/SelfShowPokeCollection"
+                app:layout_constraintRight_toRightOf="@+id/SelfShowPokeCollection"
+                android:textSize="24sp"
+                android:text="不出"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/EnterNewTurn"
-                app:layout_constraintStart_toEndOf="@+id/PickupPoke"
-                android:layout_marginStart="108dp"
-                app:layout_constraintBottom_toBottomOf="@+id/PickupPoke"
-                app:layout_constraintEnd_toEndOf="@+id/SelfShowPokeCollection" android:layout_marginEnd="8dp"
-                app:layout_constraintHorizontal_bias="0.0"/>
+                android:id="@+id/SelfNotShow" app:layout_constraintHorizontal_bias="0.522"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/SelfShowPokeCollection"/>
+        <TextView
+                android:textSize="24sp"
+                android:visibility="gone"
+                android:text="不出"
+                app:layout_constraintTop_toTopOf="@id/LeftPlayerShowPokeCollection"
+                app:layout_constraintBottom_toBottomOf="@id/LeftPlayerShowPokeCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/LeftNotShow"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/LeftPlayerShowPokeCollection"
+                android:layout_marginStart="24dp" android:layout_marginLeft="24dp"/>
+        <TextView
+                android:textSize="24sp"
+                android:visibility="gone"
+                android:text="不出"
+                app:layout_constraintTop_toTopOf="@id/RightPlayerShowPokeCollection"
+                app:layout_constraintBottom_toBottomOf="@id/RightPlayerShowPokeCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/RightNotShow"
+                app:layout_constraintEnd_toStartOf="@+id/RightPlayerShowPokeCollection" android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"/>
+
+        <TextView
+                android:textSize="24sp"
+                android:visibility="gone"
+                android:text="不出"
+                app:layout_constraintLeft_toLeftOf="@+id/TopPlayerShowPokeCollection"
+                app:layout_constraintRight_toRightOf="@+id/TopPlayerShowPokeCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/TopNotShow"
+                android:layout_marginRight="24dp"
+                app:layout_constraintHorizontal_bias="0.347"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/TopPlayerShowPokeCollection"/>
     </com.nemesiss.chuodaidi.Android.View.CardDesk>
 </android.support.constraint.ConstraintLayout>

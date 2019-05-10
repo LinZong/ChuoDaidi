@@ -6,7 +6,17 @@ import com.nemesiss.chuodaidi.Game.Model.Card;
 import java.util.List;
 
 public class RemotePlayer implements Player {
-    
+
+
+    @Override
+    public int GetPlayerNumber() {
+        return 0;
+    }
+
+    @Override
+    public void SetPlayerNumber(int num) {
+
+    }
 
     @Override
     public List<Card> GetHandCards() {

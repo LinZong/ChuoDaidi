@@ -1,5 +1,6 @@
 package com.nemesiss.chuodaidi.Game.Component.Controller;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
@@ -7,13 +8,21 @@ import com.nemesiss.chuodaidi.Game.Model.Card;
 import java.util.List;
 
 public class ClientRoundController implements BaseRoundController {
+
+    private static Handler MessageHandler = null;
+
+    public ClientRoundController()
+    {
+
+    }
+
     @Override
     public void TakeTurn() {
 
     }
 
     @Override
-    public void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self) {
+    public void NewCompetition(List<Player> TogetherPlayer, @NonNull Player Self) {
 
     }
 
@@ -22,9 +31,13 @@ public class ClientRoundController implements BaseRoundController {
 
     }
 
-
     @Override
     public void HandleGameSettle(int Who) {
 
+    }
+
+    @Override
+    public Handler GetMessageHandler() {
+        return MessageHandler;
     }
 }

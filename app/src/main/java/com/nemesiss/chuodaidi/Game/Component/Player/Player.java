@@ -6,6 +6,8 @@ import com.nemesiss.chuodaidi.Game.Model.Card;
 import java.util.List;
 
 public interface Player {
+    int GetPlayerNumber();
+    void SetPlayerNumber(int num);
     List<Card> GetHandCards();// 获取手中剩余全部牌
     void InitSetHandCards(@NonNull List<Card> InitHandCards);// 开局时候初始化手牌
     void ShowCard(List<Integer> CardIndex); // 出牌
