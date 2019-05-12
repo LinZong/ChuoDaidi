@@ -1,12 +1,25 @@
 package com.nemesiss.chuodaidi.Game.Component.Player;
 
 import android.support.annotation.NonNull;
+import com.nemesiss.chuodaidi.Android.View.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.List;
 
 public class RemotePlayer implements Player {
 
+    private List<Card> handCards;
+    private BaseRoundController roundController;
+    private int PlayerNumber;
+    private CardDesk GameCardDesk;
+
+    public RemotePlayer(BaseRoundController rc, int MyNumber, CardDesk cardDesk)
+    {
+        roundController = rc;
+        SetPlayerNumber(MyNumber);
+        GameCardDesk = cardDesk;
+    }
 
     @Override
     public int GetPlayerNumber() {

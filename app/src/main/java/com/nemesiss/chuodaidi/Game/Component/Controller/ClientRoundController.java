@@ -17,6 +17,11 @@ public class ClientRoundController implements BaseRoundController {
     }
 
     @Override
+    public void NextTurn() {
+
+    }
+
+    @Override
     public void TakeTurn() {
 
     }

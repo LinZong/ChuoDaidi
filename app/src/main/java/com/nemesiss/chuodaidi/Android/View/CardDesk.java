@@ -119,7 +119,7 @@ public class CardDesk extends ConstraintLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        Init();
+        if(IsMeasuringChildView) Init();
     }
 
     private void PrepareChildViewMeasureEventProxy() {
@@ -141,11 +141,25 @@ public class CardDesk extends ConstraintLayout {
 
 
     public void ShowPokeControlPanel() {
-        SelfPokeControlPanel.setVisibility(VISIBLE);
+        if(IsMeasuringChildView) {
+            PendingOnMeasureChildView.add(() -> {
+                SelfPokeControlPanel.setVisibility(VISIBLE);
+            });
+        }
+        else {
+            SelfPokeControlPanel.setVisibility(VISIBLE);
+        }
     }
 
     public void HidePokeControlPanel() {
-        SelfPokeControlPanel.setVisibility(GONE);
+        if(IsMeasuringChildView) {
+            PendingOnMeasureChildView.add(() -> {
+                SelfPokeControlPanel.setVisibility(GONE);
+            });
+        }
+        else {
+            SelfPokeControlPanel.setVisibility(GONE);
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -161,6 +175,7 @@ public class CardDesk extends ConstraintLayout {
 
         PokeCollections = new LinearLayout[4];
         ShowPokeCollections = new LinearLayout[4];
+        NotShowTextViews = new TextView[4];
 
         PokeCollections[SELF] = findViewById(R.id.SelfPokeCollection);
         ShowPokeCollections[SELF] = findViewById(R.id.SelfShowPokeCollection);
@@ -405,6 +420,13 @@ public class CardDesk extends ConstraintLayout {
             }
             ShowPokeCollections[SELF].addView(iv, lp);
             Log.d("CardDesk", String.valueOf(ShowPokeCollections[SELF].getWidth()));
+        }
+        // 修复第一张牌的偏移
+        if(!SelfCardImageList.isEmpty()) {
+            ImageView iv = SelfCardImageList.get(0);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) iv.getLayoutParams();
+            lp.leftMargin = 0;
+            iv.setLayoutParams(lp);
         }
     }
 

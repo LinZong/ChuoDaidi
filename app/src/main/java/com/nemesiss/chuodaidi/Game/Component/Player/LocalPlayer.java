@@ -17,10 +17,13 @@ public class LocalPlayer implements Player {
     private List<Card> handCards;
     private BaseRoundController roundController;
     private int PlayerNumber;
-    public LocalPlayer(BaseRoundController rc,int MyNumber)
+    private CardDesk GameCardDesk;
+
+    public LocalPlayer(BaseRoundController rc,int MyNumber,CardDesk cardDesk)
     {
         roundController = rc;
         SetPlayerNumber(MyNumber);
+        GameCardDesk = cardDesk;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class LocalPlayer implements Player {
         }
 
         Message msg = new Message();
-
+        msg.what = RoundControllerMessage.FINISH_SHOW_CARD;
         Bundle bd = new Bundle();
         bd.putInt("Who",GetPlayerNumber());
         bd.putSerializable("ShowCards", AllSelectedCard.toArray(new Card[0]));
@@ -73,8 +76,8 @@ public class LocalPlayer implements Player {
     @Override
     public void HandleTakeTurn() {
         // 应答TakeTurn消息，通知自身轮次控制器开始倒计时
-        roundController.MessageHandler.sendEmptyMessage(RoundControllerMessage.BEGIN_SHOW_CARD);
+        roundController.GetMessageHandler().sendEmptyMessage(RoundControllerMessage.BEGIN_SHOW_CARD);
         // 45s not show card regards as pass.
-        roundController.MessageHandler.sendEmptyMessageDelayed(RoundControllerMessage.SHOW_CARD_OVERTIME,45 * 1000);
+        roundController.GetMessageHandler().sendEmptyMessageDelayed(RoundControllerMessage.SHOW_CARD_OVERTIME,45 * 1000);
     }
 }

@@ -22,11 +22,17 @@ public class Card implements Serializable {
     }
 
     public enum Pattern {
-        Spade,//♠️
-        Heart, // ♥️
-        Diamond, // 方块
-        Club // ♣️
+        Spade(4),//♠️
+        Heart(3), // ♥️
+        Diamond(1), // 方块
+        Club(2); // ♣️
         // 方块  梅花  红心  黑桃  (从小到大)
+
+        public int size;
+        Pattern(int _size)
+        {
+            size = _size;
+        }
     }
 
     @Override

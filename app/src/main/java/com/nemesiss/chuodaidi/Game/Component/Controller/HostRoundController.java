@@ -30,7 +30,6 @@ public class HostRoundController implements BaseRoundController {
 
     public static Handler MessageHandler;
 
-
     static class RoundMessageHandler extends Handler
     {
         private WeakReference<BaseRoundController> rc;
@@ -45,12 +44,6 @@ public class HostRoundController implements BaseRoundController {
                     rc.get().HandleShowCard(Who,shownCard);
                     break;
                 }
-//                case RoundControllerMessage.SHOWN_ALL_CARD: {
-//                    Bundle bd = msg.getData();
-//                    int Who = bd.getInt("Who");
-//                    rc.get().HandleGameSettle(Who);
-//                    break;
-//                }
                 case RoundControllerMessage.BEGIN_SHOW_CARD:{
                     // 如果是SELF，通知牌桌显示出牌按钮
                     innerCardDesk.get().ShowPokeControlPanel();
@@ -60,12 +53,14 @@ public class HostRoundController implements BaseRoundController {
                     // 如果是SELF，通知牌桌隐藏出牌按钮
                     innerCardDesk.get().HidePokeControlPanel();
                     MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD_OVERTIME);
-
+                    rc.get().NextTurn();
+                    rc.get().TakeTurn();
                     break;
                 }
                 case RoundControllerMessage.SHOW_CARD_OVERTIME:{
                     innerCardDesk.get().HidePokeControlPanel();
-
+                    rc.get().NextTurn();
+                    rc.get().TakeTurn();
                     break;
                 }
             }
@@ -86,10 +81,16 @@ public class HostRoundController implements BaseRoundController {
     }
 
     @Override
+    public void NextTurn() {
+        NextTurn = (NextTurn + 1) % 4;
+    }
+
+    @Override
     public void TakeTurn() {
 
         AllPlayer[NextTurn].NotifyTakeTurn();
     }
+
 
     @Override
     public void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self) {
@@ -101,14 +102,15 @@ public class HostRoundController implements BaseRoundController {
         AllPlayer[CardDesk.TOP] = TogetherPlayer.get(1);
         AllPlayer[CardDesk.LEFT] = TogetherPlayer.get(2);
         // 决定谁先开局
-        if(WinnerPlayer != -1) {
-            NextTurn = WinnerPlayer;
-        }
-        else {
-            // 选择NextTurn
-            SecureRandom sr = new SecureRandom();
-            NextTurn = sr.nextInt(4);
-        }
+//        if(WinnerPlayer != -1) {
+//            NextTurn = WinnerPlayer;
+//        }
+//        else {
+//            // 选择NextTurn
+//            SecureRandom sr = new SecureRandom();
+//            NextTurn = sr.nextInt(4);
+//        }
+        NextTurn = 0;
         // 通知CardDesk开启新局
         GameCardDesk.NewCompetition(Self);
         // 开始轮转
@@ -118,6 +120,7 @@ public class HostRoundController implements BaseRoundController {
 
     @Override
     public void HandleShowCard(int Who, List<Card> ShownCard) {
+        // TODO 把出牌信息广播出去
 
     }
 

@@ -8,12 +8,11 @@ import com.nemesiss.chuodaidi.Game.Model.Card;
 import java.util.List;
 
 public interface BaseRoundController {
+    void NextTurn();
     void TakeTurn();
     void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self);
     void HandleShowCard(int Who, List<Card> ShownCard);
     void HandleGameSettle(int Who);
-
-    Handler MessageHandler = null;
 
     Handler GetMessageHandler();
 }
