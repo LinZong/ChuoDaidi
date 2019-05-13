@@ -44,28 +44,25 @@ public class TestCardDeskActivity extends ChuoDaidiActivity {
 
         List<Card> shuffled = CardHelper.GetShuffledCard();
 
-        List<Card> c1 = shuffled.subList(0,13);
-        List<Card> c2 = shuffled.subList(13,26);
-        List<Card> c3 = shuffled.subList(26,39);
-        List<Card> c4 = shuffled.subList(39,52);
+        List<Card> c1 = new ArrayList<>(shuffled.subList(0, 13));
+        List<Card> c2 = new ArrayList<>(shuffled.subList(13, 26));
+        List<Card> c3 = new ArrayList<>(shuffled.subList(26,39));
+        List<Card> c4 = new ArrayList<>(shuffled.subList(39,52));
+
+
+
         Collections.sort(c1, new CardComparator());
         Collections.sort(c2, new CardComparator());
         Collections.sort(c3, new CardComparator());
         Collections.sort(c4, new CardComparator());
-
 
         FakeRobots.get(0).InitSetHandCards(c1);
         FakeRobots.get(1).InitSetHandCards(c2);
         FakeRobots.get(2).InitSetHandCards(c3);
         self.InitSetHandCards(c4);
 
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         roundController.NewCompetition(FakeRobots,self);
+
     }
+
 }

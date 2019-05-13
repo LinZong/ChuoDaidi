@@ -271,7 +271,7 @@ public class CardDesk extends ConstraintLayout {
     private int MeasureHorizontalMarginStart(int CardWidth) {
         //return (int)(-(1-r1)*width);
         // 感觉只要给牌的一半就足够
-        return (int) (-(0.5f) * CardWidth);
+        return (int) (-(0.6f) * CardWidth);
     }
 
 
@@ -337,7 +337,7 @@ public class CardDesk extends ConstraintLayout {
                 int marginStart = MeasureHorizontalMarginStart(cardWidth);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(cardWidth, cardHeight);
                 if (i > 0) {
-                    lp.setMarginStart((int)(marginStart * 1.2f));
+                    lp.setMarginStart((marginStart));
                 }
                 SelfCardImageList.add(iv);
                 PokeCollections[SELF].addView(iv, lp);

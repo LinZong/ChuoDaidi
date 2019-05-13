@@ -4,13 +4,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
+import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
 import com.nemesiss.chuodaidi.Android.View.CardDesk;
+import com.nemesiss.chuodaidi.Android.View.CountDownTextView;
+import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.R;
 
-import java.lang.ref.WeakReference;
-import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HostRoundController implements BaseRoundController {
@@ -22,73 +27,139 @@ public class HostRoundController implements BaseRoundController {
     private Player[] AllPlayer;
     private int WinnerPlayer = -1;
     private int NextTurn = -1;
-
+    private int FirstTurn = -1;
     // 牌桌
     private CardDesk GameCardDesk;
+    private CountDownTextView CountDown;
 
     // 牌桌上的控制按钮
 
     public static Handler MessageHandler;
 
-    static class RoundMessageHandler extends Handler
-    {
-        private WeakReference<BaseRoundController> rc;
-        private WeakReference<CardDesk> innerCardDesk;
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case RoundControllerMessage.SHOW_CARD : {
-                    Bundle bd = msg.getData();
-                    int Who = bd.getInt("Who");
-                    List<Card> shownCard = (List<Card>) bd.getSerializable("ShownCard");
-                    rc.get().HandleShowCard(Who,shownCard);
-                    break;
-                }
-                case RoundControllerMessage.BEGIN_SHOW_CARD:{
-                    // 如果是SELF，通知牌桌显示出牌按钮
-                    innerCardDesk.get().ShowPokeControlPanel();
-                    break;
-                }
-                case RoundControllerMessage.FINISH_SHOW_CARD:{
-                    // 如果是SELF，通知牌桌隐藏出牌按钮
-                    innerCardDesk.get().HidePokeControlPanel();
-                    MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD_OVERTIME);
-                    rc.get().NextTurn();
-                    rc.get().TakeTurn();
-                    break;
-                }
-                case RoundControllerMessage.SHOW_CARD_OVERTIME:{
-                    innerCardDesk.get().HidePokeControlPanel();
-                    rc.get().NextTurn();
-                    rc.get().TakeTurn();
-                    break;
-                }
-            }
-        }
-
-        RoundMessageHandler(BaseRoundController roundController,CardDesk cd)
-        {
-            rc = new WeakReference<>(roundController);
-            innerCardDesk = new WeakReference<>(cd);
-        }
-    }
 
     public HostRoundController(ChuoDaidiActivity act,CardDesk cd)
     {
         HostGameActivity = act;
-        MessageHandler = new RoundMessageHandler(this,cd);
+        MessageHandler = new Handler(this::HandleControllerMessage);
         GameCardDesk = cd;
+
+        CountDown = HostGameActivity.findViewById(R.id.countDownTextView);
+        CountDown.InitCountDown(1000,45,()-> {
+            MessageHandler.sendEmptyMessage(RoundControllerMessage.SHOW_CARD_OVERTIME);
+            CountDown.Cancel();
+        }, act);
+    }
+
+    private void ShowPokeControlPanelForMySelf()
+    {
+        int CurrentTurn = GetCurrentTurnPlayerNumber();
+        if(CurrentTurn == GetAllPlayer()[CardDesk.SELF].GetPlayerNumber())
+        {
+            GameCardDesk.ShowPokeControlPanel();
+        }
+    }
+
+    private void HidePokeControlPanelForMySelf()
+    {
+        int CurrentTurn = GetCurrentTurnPlayerNumber();
+        if(CurrentTurn == GetAllPlayer()[CardDesk.SELF].GetPlayerNumber())
+        {
+            GameCardDesk.HidePokeControlPanel();
+        }
+    }
+
+
+    private boolean HandleControllerMessage(Message msg)
+    {
+        switch (msg.what) {
+            case RoundControllerMessage.BEGIN_SHOW_CARD:{
+
+                ShowPokeControlPanelForMySelf();
+
+                // 启动定时器
+                CountDown.Start();
+                break;
+            }
+            case RoundControllerMessage.FINISH_SHOW_CARD:{
+                // 如果是SELF，通知牌桌隐藏出牌按钮
+                HidePokeControlPanelForMySelf();
+
+
+                CountDown.Cancel();
+                Bundle data = msg.getData();
+
+                boolean WillWin = data.getBoolean(GameHelper.I_WILL_WIN_FLAG);
+                int Who = data.getInt(GameHelper.WHO_FLAG);
+                Card[] shownCard = (Card[]) data.getSerializable(GameHelper.SHOW_CARDS_FLAG);
+
+
+                int Current = GetCurrentTurnPlayerNumber();
+
+                // 所有延时的请求都丢弃
+                if(Who == Current)
+                {
+                    HandleShowCard(Who, Arrays.asList(shownCard));
+                    if(WillWin)
+                    {
+                        Toast.makeText(ChuoDaidiApplication.getContext(),"有人赢了, 游戏结束 " + Who,Toast.LENGTH_SHORT).show();
+                        WinnerPlayer = Who;
+                    }
+                    else {
+
+                        MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD_OVERTIME);
+                        NextTurn();
+                        TakeTurn();
+                    }
+                }
+
+                break;
+            }
+            case RoundControllerMessage.SHOW_CARD_OVERTIME:{
+
+
+                HidePokeControlPanelForMySelf();
+                // 不出
+                GameCardDesk.SelectCard(NextTurn,new ArrayList<>());
+
+                NextTurn();
+                TakeTurn();
+                break;
+            }
+        }
+        return true;
     }
 
     @Override
     public void NextTurn() {
+        // 计算下一个应该是谁
         NextTurn = (NextTurn + 1) % 4;
+    }
+
+    public int GetCurrentTurnPlayerNumber()
+    {
+        return AllPlayer[NextTurn].GetPlayerNumber();
+    }
+
+    @Override
+    public Player[] GetAllPlayer()
+    {
+        return AllPlayer;
     }
 
     @Override
     public void TakeTurn() {
 
-        AllPlayer[NextTurn].NotifyTakeTurn();
+        if(NextTurn == FirstTurn)
+        {
+            // 延迟几秒
+            MessageHandler.postDelayed(() -> {
+                GameCardDesk.NewTurn();
+                AllPlayer[NextTurn].NotifyTakeTurn();
+            }, 3000);
+        }
+        else {
+            AllPlayer[NextTurn].NotifyTakeTurn();
+        }
     }
 
 
@@ -110,7 +181,7 @@ public class HostRoundController implements BaseRoundController {
 //            SecureRandom sr = new SecureRandom();
 //            NextTurn = sr.nextInt(4);
 //        }
-        NextTurn = 0;
+        FirstTurn = NextTurn = 0;
         // 通知CardDesk开启新局
         GameCardDesk.NewCompetition(Self);
         // 开始轮转

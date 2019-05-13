@@ -42,6 +42,18 @@ public class ClientRoundController implements BaseRoundController {
     }
 
     @Override
+    public int GetCurrentTurnPlayerNumber()
+    {
+        return 0;
+    }
+
+    @Override
+    public Player[] GetAllPlayer()
+    {
+        return new Player[0];
+    }
+
+    @Override
     public Handler GetMessageHandler() {
         return MessageHandler;
     }

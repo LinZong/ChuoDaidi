@@ -1,6 +1,9 @@
 package com.nemesiss.chuodaidi.Android.Utils;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.BuildConfig;
 import com.nemesiss.chuodaidi.Game.Model.Card;
@@ -40,5 +43,18 @@ public class AppUtil {
             }
         }
         return drawableList;
+    }
+
+    public static void LoadFragmentToActivity(ChuoDaidiActivity activity, int FragmentContainer, Fragment fragment)
+    {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(FragmentContainer,fragment);
+        if(fm.getBackStackEntryCount() > 0)
+        {
+            ft.setCustomAnimations(R.anim.slide_in,R.anim.slide_out,R.anim.pop_slide_in,R.anim.pop_slide_out);
+        }
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

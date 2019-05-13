@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import com.nemesiss.chuodaidi.Android.View.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Controller.RoundControllerMessage;
+import com.nemesiss.chuodaidi.Game.Component.Helper.CardHelper;
+import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.ArrayList;
@@ -59,11 +61,7 @@ public class LocalPlayer implements Player {
             handCards.remove(card);
         }
 
-        Message msg = new Message();
-        msg.what = RoundControllerMessage.FINISH_SHOW_CARD;
-        Bundle bd = new Bundle();
-        bd.putInt("Who",GetPlayerNumber());
-        bd.putSerializable("ShowCards", AllSelectedCard.toArray(new Card[0]));
+        Message msg = GameHelper.BuildSelectCardMessage(PlayerNumber,AllSelectedCard,handCards.size() == 0);
 
         roundController.GetMessageHandler().sendMessage(msg);
     }
@@ -77,7 +75,5 @@ public class LocalPlayer implements Player {
     public void HandleTakeTurn() {
         // 应答TakeTurn消息，通知自身轮次控制器开始倒计时
         roundController.GetMessageHandler().sendEmptyMessage(RoundControllerMessage.BEGIN_SHOW_CARD);
-        // 45s not show card regards as pass.
-        roundController.GetMessageHandler().sendEmptyMessageDelayed(RoundControllerMessage.SHOW_CARD_OVERTIME,45 * 1000);
     }
 }

@@ -46,14 +46,9 @@ public class CardComparatorMultiple {
               }
               else
                   return  false;
-                break;
             }
             case 3:{
-                if(o1PointSize1>o2PointSize1)
-                    return true;
-                else
-                    return false;
-                break;
+                return o1PointSize1 > o2PointSize1;
             }
             case 5:{
                 int o1PointSize2 = CardHelper.GetPointSize(left.get(1).getPoint());
@@ -91,5 +86,6 @@ public class CardComparatorMultiple {
                 break;
             }
         }
+        return true;
     }
 }

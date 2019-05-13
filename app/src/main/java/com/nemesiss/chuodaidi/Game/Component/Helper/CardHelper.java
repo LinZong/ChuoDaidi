@@ -1,5 +1,8 @@
 package com.nemesiss.chuodaidi.Game.Component.Helper;
 
+import android.os.Bundle;
+import android.os.Message;
+import com.nemesiss.chuodaidi.Game.Component.Controller.RoundControllerMessage;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.security.Policy;
@@ -47,4 +50,6 @@ public class CardHelper {
             return Integer.parseInt(point);
         }
     }
+
+
 }

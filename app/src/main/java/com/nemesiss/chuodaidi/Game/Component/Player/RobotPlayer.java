@@ -1,12 +1,15 @@
 package com.nemesiss.chuodaidi.Game.Component.Player;
 
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
 import com.nemesiss.chuodaidi.Android.View.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
+import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RobotPlayer implements Player {
@@ -35,7 +38,7 @@ public class RobotPlayer implements Player {
 
     @Override
     public List<Card> GetHandCards() {
-        return null;
+        return handCards;
     }
 
     @Override
@@ -46,15 +49,32 @@ public class RobotPlayer implements Player {
     @Override
     public void ShowCard(List<Integer> CardIndex) {
 
+        List<Card> selected = new ArrayList<>();
+        for (Integer index : CardIndex)
+        {
+            selected.add(handCards.get(index));
+        }
+        for (Card card : selected)
+        {
+            handCards.remove(card);
+        }
+
+        Message msg = GameHelper.BuildSelectCardMessage(PlayerNumber,selected,handCards.size() == 0);
+        roundController.GetMessageHandler().sendMessage(msg);
     }
 
     @Override
     public void NotifyTakeTurn() {
         Log.d("RobotPlayer","轮到我  " + PlayerNumber);
+        HandleTakeTurn();
     }
 
     @Override
     public void HandleTakeTurn() {
-
+        List<Card> show = handCards.subList(0,1);
+        GameCardDesk.SelectCard(PlayerNumber,show);
+        List<Integer> showIndex = new ArrayList<>();
+        showIndex.add(0);
+        ShowCard(showIndex);
     }
 }
