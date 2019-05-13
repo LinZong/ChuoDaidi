@@ -49,11 +49,12 @@ public class AppUtil {
     {
         FragmentManager fm = activity.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(FragmentContainer,fragment);
+
         if(fm.getBackStackEntryCount() > 0)
         {
             ft.setCustomAnimations(R.anim.slide_in,R.anim.slide_out,R.anim.pop_slide_in,R.anim.pop_slide_out);
         }
+        ft.replace(FragmentContainer,fragment);
         ft.addToBackStack(null);
         ft.commit();
     }

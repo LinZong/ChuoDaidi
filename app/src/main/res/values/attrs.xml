@@ -5,4 +5,8 @@
         <attr name="card_r1" format="float"/>
         <attr name="card_r2" format="float"/>
     </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="corner_radius" format="float"/>
+    </declare-styleable>
 </resources>

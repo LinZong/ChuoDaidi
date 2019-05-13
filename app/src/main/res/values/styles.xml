@@ -14,4 +14,10 @@
     <style name="WelcomeTextViewStyle">
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="WelcomeButtonStyle">
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:background">@drawable/welcome_btn_style</item>
+        <item name="android:textColor">@drawable/welcome_btn_font_style</item>
+    </style>
 </resources>

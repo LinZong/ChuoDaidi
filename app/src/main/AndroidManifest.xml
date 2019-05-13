@@ -16,17 +16,16 @@
 
         </activity>
         <activity
-                android:name=".Android.Activity.MainActivity"
-                android:screenOrientation="landscape">
-        </activity>
-        <activity android:name=".Android.Activity.WelcomeActivity"
-                  android:theme="@style/WelcomeStyle"
-                  android:screenOrientation="landscape">
+                android:name=".Android.Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-    </application>
+        <activity android:name=".Android.Activity.WelcomeActivity"
+                  android:theme="@style/WelcomeStyle"
+                  android:screenOrientation="landscape">
 
+        </activity>
+    </application>
 </manifest>

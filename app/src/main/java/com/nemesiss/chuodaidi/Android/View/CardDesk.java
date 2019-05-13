@@ -331,7 +331,7 @@ public class CardDesk extends ConstraintLayout {
 
                 Uri imgUri = AppUtil.ParseResourceIdToUri(cardsResource.get(i));
 
-                Glide.with(mContext).load(imgUri).into(iv);
+                Glide.with(mContext).load(imgUri).dontAnimate().into(iv);
                 int cardHeight = MeasureHorizontalCardHeight(SelfPokeContainerHeight);
                 int cardWidth = MeasureHorizontalCardWidth(cardHeight);
                 int marginStart = MeasureHorizontalMarginStart(cardWidth);
@@ -360,7 +360,7 @@ public class CardDesk extends ConstraintLayout {
         for (int i = 0; i < count; i++)
         {
             ImageView iv = CreatePokeImageView();
-            Glide.with(mContext).load(bgUri).into(iv);
+            Glide.with(mContext).load(bgUri).dontAnimate().into(iv);
             int width,height;
             LinearLayout.LayoutParams lp = null;
             switch (position) {
@@ -437,7 +437,7 @@ public class CardDesk extends ConstraintLayout {
 
             for (int i = 0; i < cards.size(); i++) {
                 ImageView iv = CreatePokeImageView();
-                Glide.with(mContext).load(drawRes.get(i)).into(iv);
+                Glide.with(mContext).load(drawRes.get(i)).dontAnimate().into(iv);
 
                 int height = (VerticalShowContainerHeight);
                 int width = MeasureHorizontalCardWidth(height);
