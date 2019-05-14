@@ -57,4 +57,10 @@ public class ClientRoundController implements BaseRoundController {
     public Handler GetMessageHandler() {
         return MessageHandler;
     }
+
+    @Override
+    public void ShouldExit()
+    {
+
+    }
 }

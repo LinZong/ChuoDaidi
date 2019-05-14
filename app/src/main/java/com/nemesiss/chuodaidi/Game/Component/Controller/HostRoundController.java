@@ -7,18 +7,20 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
-import com.nemesiss.chuodaidi.Android.View.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
 import com.nemesiss.chuodaidi.Android.View.CountDownTextView;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 import com.nemesiss.chuodaidi.R;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class HostRoundController implements BaseRoundController {
+
 
 
     private ChuoDaidiActivity HostGameActivity;
@@ -28,6 +30,7 @@ public class HostRoundController implements BaseRoundController {
     private int WinnerPlayer = -1;
     private int NextTurn = -1;
     private int FirstTurn = -1;
+    private boolean FirstEnterGame = true;
     // 牌桌
     private CardDesk GameCardDesk;
     private CountDownTextView CountDown;
@@ -42,7 +45,6 @@ public class HostRoundController implements BaseRoundController {
         HostGameActivity = act;
         MessageHandler = new Handler(this::HandleControllerMessage);
         GameCardDesk = cd;
-
         CountDown = HostGameActivity.findViewById(R.id.countDownTextView);
         CountDown.InitCountDown(1000,45,()-> {
             MessageHandler.sendEmptyMessage(RoundControllerMessage.SHOW_CARD_OVERTIME);
@@ -151,11 +153,19 @@ public class HostRoundController implements BaseRoundController {
 
         if(NextTurn == FirstTurn)
         {
-            // 延迟几秒
-            MessageHandler.postDelayed(() -> {
+            if(FirstEnterGame)
+            {
+                FirstEnterGame = false;
                 GameCardDesk.NewTurn();
                 AllPlayer[NextTurn].NotifyTakeTurn();
-            }, 3000);
+            }
+            // 延迟几秒
+            else {
+                MessageHandler.postDelayed(() -> {
+                    GameCardDesk.NewTurn();
+                    AllPlayer[NextTurn].NotifyTakeTurn();
+                }, 3000);
+            }
         }
         else {
             AllPlayer[NextTurn].NotifyTakeTurn();
@@ -165,6 +175,9 @@ public class HostRoundController implements BaseRoundController {
 
     @Override
     public void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self) {
+
+        FirstEnterGame  = true;
+
         // 保存当局的所有Player
         AllPlayer = new Player[4];
         // TODO 检测TogetherPlayer的数目必须正好为3， 检测Self不能为空
@@ -173,15 +186,15 @@ public class HostRoundController implements BaseRoundController {
         AllPlayer[CardDesk.TOP] = TogetherPlayer.get(1);
         AllPlayer[CardDesk.LEFT] = TogetherPlayer.get(2);
         // 决定谁先开局
-//        if(WinnerPlayer != -1) {
-//            NextTurn = WinnerPlayer;
-//        }
-//        else {
-//            // 选择NextTurn
-//            SecureRandom sr = new SecureRandom();
-//            NextTurn = sr.nextInt(4);
-//        }
-        FirstTurn = NextTurn = 0;
+        if(WinnerPlayer != -1) {
+            NextTurn = WinnerPlayer;
+        }
+        else {
+            // 选择NextTurn
+            SecureRandom sr = new SecureRandom();
+            FirstTurn = NextTurn = sr.nextInt(4);
+        }
+
         // 通知CardDesk开启新局
         GameCardDesk.NewCompetition(Self);
         // 开始轮转
@@ -204,5 +217,15 @@ public class HostRoundController implements BaseRoundController {
     @Override
     public Handler GetMessageHandler() {
         return MessageHandler;
+    }
+
+    public void ShouldExit()
+    {
+        CountDown.Cancel();
+        MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD_OVERTIME);
+        MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD);
+        MessageHandler.removeMessages(RoundControllerMessage.BEGIN_SHOW_CARD);
+        MessageHandler.removeMessages(RoundControllerMessage.FINISH_SHOW_CARD);
+        MessageHandler.removeMessages(RoundControllerMessage.SHOWN_ALL_CARD);
     }
 }

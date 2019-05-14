@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nemesiss.chuodaidi.Android.View.RoundImageView;
 import com.nemesiss.chuodaidi.Android.View.ViewProcess.RoundImageTransform;
 import com.nemesiss.chuodaidi.R;
@@ -30,11 +31,14 @@ public class MainActivity extends ChuoDaidiActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Glide.with(MainActivity.this)
-                .load(R.drawable.poke_card_2_diamond)
-                .transform(new RoundImageTransform(MainActivity.this))
-                .dontAnimate()
-                .into(iv);
+//        Glide.with(MainActivity.this)
+//                .load(R.drawable.poke_card_2_diamond)
+//                .transform(new RoundImageTransform(MainActivity.this,10))
+//                .dontAnimate()
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .into(iv);
+
 
 
     }

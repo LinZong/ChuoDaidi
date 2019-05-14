@@ -1,9 +1,11 @@
-package com.nemesiss.chuodaidi.Android.View;
+package com.nemesiss.chuodaidi.Game.Component.Interact;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -14,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.nemesiss.chuodaidi.Android.Activity.MainActivity;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.Utils.EventProxy;
+import com.nemesiss.chuodaidi.Android.View.ViewProcess.RoundImageTransform;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 import com.nemesiss.chuodaidi.R;
@@ -24,6 +28,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CardDesk extends ConstraintLayout {
+
 
     // View控制相关变量
     private float CardWHRatio; // 扑克牌  宽/长  的比值
@@ -92,6 +97,7 @@ public class CardDesk extends ConstraintLayout {
         super(context);
         mContext = context;
         PrepareChildViewMeasureEventProxy();
+
     }
 
     public CardDesk(Context context, AttributeSet attrs) {
@@ -122,6 +128,8 @@ public class CardDesk extends ConstraintLayout {
         if(IsMeasuringChildView) Init();
     }
 
+
+
     private void PrepareChildViewMeasureEventProxy() {
         AllMeasureChildViewTask = new EventProxy<>();
 
@@ -139,6 +147,14 @@ public class CardDesk extends ConstraintLayout {
         }, "self", "right", "top", "show_self");
     }
 
+
+    public synchronized void DoAfterCardDeskLoaded(Runnable action)
+    {
+        if(IsMeasuringChildView) {
+            PendingOnMeasureChildView.add(action);
+        }
+        else action.run();
+    }
 
     public void ShowPokeControlPanel() {
         if(IsMeasuringChildView) {
@@ -331,7 +347,10 @@ public class CardDesk extends ConstraintLayout {
 
                 Uri imgUri = AppUtil.ParseResourceIdToUri(cardsResource.get(i));
 
-                Glide.with(mContext).load(imgUri).dontAnimate().into(iv);
+                Glide.with(mContext)
+                        .load(imgUri)
+                        .transform(new RoundImageTransform(mContext,20,4))
+                        .dontAnimate().into(iv);
                 int cardHeight = MeasureHorizontalCardHeight(SelfPokeContainerHeight);
                 int cardWidth = MeasureHorizontalCardWidth(cardHeight);
                 int marginStart = MeasureHorizontalMarginStart(cardWidth);
@@ -360,7 +379,11 @@ public class CardDesk extends ConstraintLayout {
         for (int i = 0; i < count; i++)
         {
             ImageView iv = CreatePokeImageView();
-            Glide.with(mContext).load(bgUri).dontAnimate().into(iv);
+            Glide.with(mContext)
+                    .load(bgUri)
+                    .transform(new RoundImageTransform(mContext,20,4))
+                    .dontAnimate()
+                    .into(iv);
             int width,height;
             LinearLayout.LayoutParams lp = null;
             switch (position) {
@@ -393,7 +416,6 @@ public class CardDesk extends ConstraintLayout {
 
     private ImageView CreatePokeImageView() {
         ImageView iv = new ImageView(mContext);
-        iv.setBackground(mContext.getDrawable(R.drawable.card_img_bored));
         iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
         return iv;
     }
@@ -437,7 +459,11 @@ public class CardDesk extends ConstraintLayout {
 
             for (int i = 0; i < cards.size(); i++) {
                 ImageView iv = CreatePokeImageView();
-                Glide.with(mContext).load(drawRes.get(i)).dontAnimate().into(iv);
+                Glide.with(mContext)
+                        .load(drawRes.get(i))
+                        .transform(new RoundImageTransform(mContext,20,4))
+                        .dontAnimate()
+                        .into(iv);
 
                 int height = (VerticalShowContainerHeight);
                 int width = MeasureHorizontalCardWidth(height);
@@ -553,4 +579,6 @@ public class CardDesk extends ConstraintLayout {
             LoadOtherPlayerCardsAsImageToContainer(13, LEFT);
         }
     }
+
+
 }

@@ -1,14 +1,10 @@
 package com.nemesiss.chuodaidi.Game.Component.Helper;
 
-import android.os.Bundle;
-import android.os.Message;
-import com.nemesiss.chuodaidi.Game.Component.Controller.RoundControllerMessage;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
-import java.security.Policy;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class CardHelper {
@@ -27,6 +23,30 @@ public class CardHelper {
 
         Collections.shuffle(shuffle);
         return shuffle;
+    }
+
+    public static List[] GetShuffledCardGroups()
+    {
+
+        List<Card> shuffled = CardHelper.GetShuffledCard();
+
+        List<Card> c1 = new ArrayList<>(shuffled.subList(0, 13));
+        List<Card> c2 = new ArrayList<>(shuffled.subList(13, 26));
+        List<Card> c3 = new ArrayList<>(shuffled.subList(26,39));
+        List<Card> c4 = new ArrayList<>(shuffled.subList(39,52));
+
+        Collections.sort(c1, new CardComparator());
+        Collections.sort(c2, new CardComparator());
+        Collections.sort(c3, new CardComparator());
+        Collections.sort(c4, new CardComparator());
+
+        List[] result = new List[4];
+        result[CardDesk.SELF] = c1;
+        result[CardDesk.RIGHT] = c2;
+        result[CardDesk.TOP] = c3;
+        result[CardDesk.LEFT] = c4;
+
+        return result;
     }
 
     public static int GetPointSize(String point)
