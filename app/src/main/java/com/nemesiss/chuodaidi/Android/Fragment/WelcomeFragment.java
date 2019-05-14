@@ -12,7 +12,7 @@ import butterknife.Unbinder;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.R;
 
-public class WelcomeFragment extends BaseWelcomeFragment
+public class WelcomeFragment extends BaseGameFragment
 {
 
     private Unbinder unbinder;
@@ -39,7 +39,7 @@ public class WelcomeFragment extends BaseWelcomeFragment
     @OnClick({R.id.Welcome_NewGame})
     public void NewGame(View v)
     {
-        AppUtil.LoadFragmentToActivity(welcomeActivity,R.id.WelcomeFuncFragmentContainer,new PlayerTypeFragment());
+        AppUtil.LoadFragmentToActivity(AttachedActivity,R.id.WelcomeFuncFragmentContainer,new PlayerTypeFragment());
     }
 
     @OnClick({R.id.Welcome_Exit})
@@ -48,7 +48,7 @@ public class WelcomeFragment extends BaseWelcomeFragment
         if (getFragmentManager() != null) {
             getFragmentManager().popBackStack();
         }
-        welcomeActivity.finish();
+        AttachedActivity.finish();
     }
 
 }

@@ -1,5 +1,5 @@
 package com.nemesiss.chuodaidi.Android.Fragment;
 
-public class RemotePlayRoomListFragment extends BaseWelcomeFragment
+public class RemotePlayRoomListFragment extends BaseGameFragment
 {
 }

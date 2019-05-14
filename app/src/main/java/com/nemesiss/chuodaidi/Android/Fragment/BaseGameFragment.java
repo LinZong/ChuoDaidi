@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
-import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.Android.Activity.WelcomeActivity;
+import com.nemesiss.chuodaidi.Android.View.GameDialog;
 
-public class BaseWelcomeFragment extends Fragment implements FragmentBackHandler
+public class BaseGameFragment extends Fragment implements FragmentBackHandler
 {
-    protected com.nemesiss.chuodaidi.Android.Activity.WelcomeActivity welcomeActivity;
+    com.nemesiss.chuodaidi.Android.Activity.WelcomeActivity AttachedActivity;
+
+    public GameDialog.Builder PendingDialogBuilder;
 
     public static final int WELCOME_FRAG_TAG = 1;
     public static final int PLAY_TYPE_FRAG_TAG = 2;
@@ -23,6 +25,10 @@ public class BaseWelcomeFragment extends Fragment implements FragmentBackHandler
     protected View view;
     private FragmentManager fm;
 
+    public WelcomeActivity getAttachedActivity() {
+        return AttachedActivity;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +38,7 @@ public class BaseWelcomeFragment extends Fragment implements FragmentBackHandler
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        welcomeActivity = (WelcomeActivity) context;
+        AttachedActivity = (WelcomeActivity) context;
     }
 
     @Override
@@ -41,7 +47,7 @@ public class BaseWelcomeFragment extends Fragment implements FragmentBackHandler
         if(fragCount == 1)
         {
             fm.popBackStack();
-            welcomeActivity.finish();
+            AttachedActivity.finish();
             return true;
         }
         return false;
