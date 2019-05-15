@@ -5,7 +5,7 @@ import com.nemesiss.chuodaidi.Game.Model.Card;
 import java.util.List;
 
 public class CardComparatorMultiple {
-    public static boolean Compare(List<Card> left,List<Card> right)
+    public boolean Compare(List<Card> left,List<Card> right)
     {
         int length = left.size();
         int o1PointSize1 = CardHelper.GetPointSize(left.get(0).getPoint());
@@ -51,37 +51,53 @@ public class CardComparatorMultiple {
                 return o1PointSize1 > o2PointSize1;
             }
             case 5:{
-                int o1PointSize2 = CardHelper.GetPointSize(left.get(1).getPoint());
-                int o2PointSize2 = CardHelper.GetPointSize(right.get(1).getPoint());
-                int o1PointSize3 = CardHelper.GetPointSize(left.get(2).getPoint());
-                int o2PointSize3 = CardHelper.GetPointSize(right.get(2).getPoint());
-                int o1PointSize4 = CardHelper.GetPointSize(left.get(3).getPoint());
-                int o2PointSize4 = CardHelper.GetPointSize(right.get(3).getPoint());
-                int o1PointSize5 = CardHelper.GetPointSize(left.get(4).getPoint());
-                int o2PointSize5 = CardHelper.GetPointSize(right.get(4).getPoint());
-                int o11Size=left.get(0).getPattern().size;
-                int o12Size=left.get(1).getPattern().size;
-                int o13Size=left.get(2).getPattern().size;
-                int o14Size=left.get(3).getPattern().size;
-                int o15Size=left.get(4).getPattern().size;
-                int o21Size=right.get(0).getPattern().size;
-                int o22Size=right.get(1).getPattern().size;
-                int o23Size=right.get(2).getPattern().size;
-                int o24Size=right.get(3).getPattern().size;
-                int o25Size=right.get(4).getPattern().size;
+                int leftNum=0;
+                int rightNum=0;
                 //判断5张牌属于哪种类型
-                //两组5张牌内部排序大小，调用单张牌排大小的函数
+               if(CardComparator.isFlushStraight(left))
+                   leftNum=5;
+               else if(CardComparator.isFourBindOne(left))
+                   leftNum=4;
+               else if(CardComparator.isThreeBindTwo(left))
+                   leftNum=3;
+               else if(CardComparator.isFlush(left))
+                   leftNum=2;
+               else if(CardComparator.isStraight(left))
+                   leftNum=1;
 
+                if(CardComparator.isFlushStraight(right))
+                   rightNum=5;
+                else if(CardComparator.isFourBindOne(right))
+                    rightNum=4;
+                else if(CardComparator.isThreeBindTwo(right))
+                    rightNum=3;
+                else if(CardComparator.isFlush(right))
+                    rightNum=2;
+                else if(CardComparator.isStraight(right))
+                    rightNum=1;
 
-                //同花顺最大
+               if(leftNum>rightNum)
+                   return true;
+               else if(leftNum==rightNum)
+               {
+                   List<Card> sortLeftCards=CardComparator.sortCards(left);
+                   List<Card> sortRightCards=CardComparator.sortCards(right);
+                  Card leftMaxCard=sortLeftCards.get(4);
+                  Card rightMaxCard=sortRightCards.get(4);
+                  int leftMiddleCard=CardHelper.GetPointSize(sortLeftCards.get(2).getPoint());
+                  int rightMiddleCard=CardHelper.GetPointSize(sortRightCards.get(2).getPoint());
 
-                //四带一次之
-
-                //三带对
-
-                //同花五
-
-                //杂顺最小
+                   if(leftNum==5||leftNum==2||leftNum==1)
+                   {
+                       CardComparator cardComparator=new CardComparator();
+                       int result=cardComparator.compare(leftMaxCard,rightMaxCard);
+                       return (result>0);
+                   }
+                   if(leftNum==3||leftNum==4)
+                       return leftMiddleCard>rightMiddleCard;
+               }
+               else
+                   return false;
 
                 break;
             }

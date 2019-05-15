@@ -71,5 +71,24 @@ public class CardHelper {
         }
     }
 
+    public static int GetPointSizeInFive(String point)
+    {
+        if(point.equals("J")) {
+            return 11;
+        }
+        if(point.equals("Q")) {
+            return 12;
+        }
+        if(point.equals("K")) {
+            return 13;
+        }
+        if(point.equals("A")) {
+            return 1;
+        }
+
+        else {
+            return Integer.parseInt(point);
+        }
+    }
 
 }
