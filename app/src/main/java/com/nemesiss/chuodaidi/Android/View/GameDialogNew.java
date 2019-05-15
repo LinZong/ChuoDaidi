@@ -36,6 +36,7 @@ public class GameDialogNew extends PopupWindow {
         setTouchable(true);
         setBackgroundDrawable(new ColorDrawable());
 
+
         setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {

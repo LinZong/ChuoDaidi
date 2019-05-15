@@ -172,7 +172,6 @@ public class HostRoundController implements BaseRoundController {
         }
     }
 
-
     @Override
     public void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self) {
 

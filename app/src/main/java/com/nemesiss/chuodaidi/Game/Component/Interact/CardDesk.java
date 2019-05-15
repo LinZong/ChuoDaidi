@@ -27,7 +27,8 @@ import com.nemesiss.chuodaidi.R;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CardDesk extends ConstraintLayout {
+public class CardDesk extends ConstraintLayout
+{
 
 
     // View控制相关变量
@@ -82,7 +83,6 @@ public class CardDesk extends ConstraintLayout {
     private Queue<Runnable> PendingOnMeasureChildView = new LinkedList<>();
 
 
-
     // 玩家手牌控制面板
     private LinearLayout SelfPokeControlPanel;
     // 出牌
@@ -90,17 +90,41 @@ public class CardDesk extends ConstraintLayout {
     // 不出
     private Button PassCard;
 
-
     private Player Self;
 
-    public CardDesk(Context context) {
+    public Button getShowCardButton()
+    {
+        return ShowCard;
+    }
+
+    public Button getPassCardButton()
+    {
+        return PassCard;
+    }
+
+    public synchronized List<Card> getSelectedCards()
+    {
+        List<Card> result = new ArrayList<>();
+        for (int i = 0; i < SelfCardStatus.size(); i++)
+        {
+            if(SelfCardStatus.get(i))
+            {
+                result.add(Self.GetHandCards().get(i));
+            }
+        }
+        return result;
+    }
+
+    public CardDesk(Context context)
+    {
         super(context);
         mContext = context;
         PrepareChildViewMeasureEventProxy();
 
     }
 
-    public CardDesk(Context context, AttributeSet attrs) {
+    public CardDesk(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
         mContext = context;
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CardDesk);
@@ -111,7 +135,8 @@ public class CardDesk extends ConstraintLayout {
         PrepareChildViewMeasureEventProxy();
     }
 
-    public CardDesk(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CardDesk(Context context, AttributeSet attrs, int defStyleAttr)
+    {
         super(context, attrs, defStyleAttr);
         mContext = context;
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CardDesk);
@@ -123,21 +148,25 @@ public class CardDesk extends ConstraintLayout {
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom)
+    {
         super.onLayout(changed, left, top, right, bottom);
-        if(IsMeasuringChildView) Init();
+        if (IsMeasuringChildView) Init();
     }
 
 
-
-    private void PrepareChildViewMeasureEventProxy() {
+    private void PrepareChildViewMeasureEventProxy()
+    {
         AllMeasureChildViewTask = new EventProxy<>();
 
-        AllMeasureChildViewTask.all(new EventProxy.EventResult<String>() {
+        AllMeasureChildViewTask.all(new EventProxy.EventResult<String>()
+        {
             @Override
-            public void handle(ConcurrentHashMap<String, Object> evs, ConcurrentHashMap<String, EventProxy.EventStatus> evStatus) {
+            public void handle(ConcurrentHashMap<String, Object> evs, ConcurrentHashMap<String, EventProxy.EventStatus> evStatus)
+            {
                 IsMeasuringChildView = false;
-                while (!PendingOnMeasureChildView.isEmpty()) {
+                while (!PendingOnMeasureChildView.isEmpty())
+                {
 
                     // 重新执行因为子View没Measure完而挂起的任务。
                     PendingOnMeasureChildView.peek().run();
@@ -150,36 +179,41 @@ public class CardDesk extends ConstraintLayout {
 
     public synchronized void DoAfterCardDeskLoaded(Runnable action)
     {
-        if(IsMeasuringChildView) {
+        if (IsMeasuringChildView)
+        {
             PendingOnMeasureChildView.add(action);
-        }
-        else action.run();
+        } else action.run();
     }
 
-    public void ShowPokeControlPanel() {
-        if(IsMeasuringChildView) {
+    public void ShowPokeControlPanel()
+    {
+        if (IsMeasuringChildView)
+        {
             PendingOnMeasureChildView.add(() -> {
                 SelfPokeControlPanel.setVisibility(VISIBLE);
             });
-        }
-        else {
+        } else
+        {
             SelfPokeControlPanel.setVisibility(VISIBLE);
         }
     }
 
-    public void HidePokeControlPanel() {
-        if(IsMeasuringChildView) {
+    public void HidePokeControlPanel()
+    {
+        if (IsMeasuringChildView)
+        {
             PendingOnMeasureChildView.add(() -> {
                 SelfPokeControlPanel.setVisibility(GONE);
             });
-        }
-        else {
+        } else
+        {
             SelfPokeControlPanel.setVisibility(GONE);
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void Init() {
+    private void Init()
+    {
         // 把LinearLayout存到数组中，索引用
 
         SelfPokeControlPanel = findViewById(R.id.SelfPokeControlPanel);
@@ -242,21 +276,28 @@ public class CardDesk extends ConstraintLayout {
 
 
         // 设置自己牌组触摸事件
-        PokeCollections[SELF].setOnTouchListener(new View.OnTouchListener() {
+        PokeCollections[SELF].setOnTouchListener(new View.OnTouchListener()
+        {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                switch (event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                    {
                         Collections.fill(SelfCardMoveLock, false);
                         break;
                     }
                     case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_MOVE: {
+                    case MotionEvent.ACTION_MOVE:
+                    {
                         int evX = Math.round(event.getX());
                         int evY = Math.round(event.getY());
                         int childCount = PokeCollections[SELF].getChildCount();
-                        for (int i = 0; i < childCount; i++) {
-                            if (DetectCardSelected(i, evX, evY) && !SelfCardMoveLock.get(i)) {
+                        for (int i = 0; i < childCount; i++)
+                        {
+                            if (DetectCardSelected(i, evX, evY) && !SelfCardMoveLock.get(i))
+                            {
                                 HandleCardSelected(i);
                                 SelfCardMoveLock.set(i, true);
                             }
@@ -271,20 +312,24 @@ public class CardDesk extends ConstraintLayout {
 
 
     // 计算横向牌的大小
-    private int MeasureHorizontalCardHeight(int ContainerHeight) {
+    private int MeasureHorizontalCardHeight(int ContainerHeight)
+    {
         return (int) (ContainerHeight / (1 + r1));
     }
 
-    private int MeasureHorizontalCardWidth(int CardHeight) {
+    private int MeasureHorizontalCardWidth(int CardHeight)
+    {
         return (int) (CardHeight * CardWHRatio);
     }
 
     // 计算横向牌应该重叠多少
-    private int MeasureHorizontalMarginBottom(int CardHeight) {
+    private int MeasureHorizontalMarginBottom(int CardHeight)
+    {
         return (int) (CardHeight * r1);
     }
 
-    private int MeasureHorizontalMarginStart(int CardWidth) {
+    private int MeasureHorizontalMarginStart(int CardWidth)
+    {
         //return (int)(-(1-r1)*width);
         // 感觉只要给牌的一半就足够
         return (int) (-(0.6f) * CardWidth);
@@ -292,31 +337,37 @@ public class CardDesk extends ConstraintLayout {
 
 
     // 计算纵向牌大小
-    private int MeasureVerticalCardHeight(int VerticalContainerWidth) {
+    private int MeasureVerticalCardHeight(int VerticalContainerWidth)
+    {
         return (int) (VerticalContainerWidth * (1f / CardWHRatio));
     }
 
-    private int MeasureVerticalCardWidth(int VerticalContainerWidth) {
+    private int MeasureVerticalCardWidth(int VerticalContainerWidth)
+    {
         return (int) (VerticalContainerWidth);
     }
 
     // 计算
-    private int MeasureVerticalCardMarginTop(int CardHeight, int ContainerHeight) {
+    private int MeasureVerticalCardMarginTop(int CardHeight, int ContainerHeight)
+    {
         //标准 return
         //return -(int) ((CardHeight - ((ContainerHeight - CardHeight) / 13)) + 0.5f);
-        return (int)(-(0.85f)*CardHeight);
+        return (int) (-(0.85f) * CardHeight);
     }
 
-    private boolean DetectCardSelected(int position, int evX, int evY) {
+    private boolean DetectCardSelected(int position, int evX, int evY)
+    {
         int end = SelfCardImageList.size() - 1;
         ImageView child = SelfCardImageList.get(position);
         int left = child.getLeft();
         int right = child.getRight();
         int top = child.getTop();
         int bottom = child.getBottom();
-        if (position == end) {
+        if (position == end)
+        {
             return (left <= evX && evX <= right && top <= evY && evY <= bottom);
-        } else {
+        } else
+        {
             int width = child.getWidth();
             int marginStart = width / 2;
             right = right - marginStart;
@@ -324,7 +375,8 @@ public class CardDesk extends ConstraintLayout {
         }
     }
 
-    private void HandleCardSelected(int position) {
+    private void HandleCardSelected(int position)
+    {
         ImageView iv = SelfCardImageList.get(position);
         boolean status = SelfCardStatus.get(position);
         int height = iv.getHeight();
@@ -337,42 +389,49 @@ public class CardDesk extends ConstraintLayout {
     }
 
 
-    private void LoadSelfCardsAsImageToContainer(List<Card> cards) {
+    private void LoadSelfCardsAsImageToContainer(List<Card> cards)
+    {
 
-        try {
+        try
+        {
             List<Integer> cardsResource = AppUtil.ConvertCardToDrawable(cards);
 
-            for (int i = 0; i < cardsResource.size(); i++) {
+            for (int i = 0; i < cardsResource.size(); i++)
+            {
                 ImageView iv = CreatePokeImageView();
 
                 Uri imgUri = AppUtil.ParseResourceIdToUri(cardsResource.get(i));
 
                 Glide.with(mContext)
                         .load(imgUri)
-                        .transform(new RoundImageTransform(mContext,20,4))
+                        .transform(new RoundImageTransform(mContext, 20, 4))
                         .dontAnimate().into(iv);
                 int cardHeight = MeasureHorizontalCardHeight(SelfPokeContainerHeight);
                 int cardWidth = MeasureHorizontalCardWidth(cardHeight);
                 int marginStart = MeasureHorizontalMarginStart(cardWidth);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(cardWidth, cardHeight);
-                if (i > 0) {
+                if (i > 0)
+                {
                     lp.setMarginStart((marginStart));
                 }
                 SelfCardImageList.add(iv);
                 PokeCollections[SELF].addView(iv, lp);
             }
 
-        } catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException e)
+        {
             Log.d("CardDesk", "找不到牌信息指定的牌图片 NoSuchFieldException");
 
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e)
+        {
             Log.d("CardDesk", "找不到牌信息指定的牌图片 IllegalAccessException");
             e.printStackTrace();
         }
     }
 
-    private void LoadOtherPlayerCardsAsImageToContainer(int count, int position) {
+    private void LoadOtherPlayerCardsAsImageToContainer(int count, int position)
+    {
         //
         Uri bgUri = AppUtil.ParseResourceIdToUri(R.drawable.poke_back);
 
@@ -381,49 +440,54 @@ public class CardDesk extends ConstraintLayout {
             ImageView iv = CreatePokeImageView();
             Glide.with(mContext)
                     .load(bgUri)
-                    .transform(new RoundImageTransform(mContext,20,4))
+                    .transform(new RoundImageTransform(mContext, 20, 4))
                     .dontAnimate()
                     .into(iv);
-            int width,height;
+            int width, height;
             LinearLayout.LayoutParams lp = null;
-            switch (position) {
+            switch (position)
+            {
                 case LEFT:
-                case RIGHT: {
+                case RIGHT:
+                {
                     width = MeasureVerticalCardWidth(TwoSideContainerWidth);
                     height = MeasureVerticalCardHeight(TwoSideContainerWidth);
                     lp = new LinearLayout.LayoutParams(width, height);
-                    if (i > 0) {
+                    if (i > 0)
+                    {
                         lp.topMargin = MeasureVerticalCardMarginTop(height, TwoSideContainerHeight);
                     }
                     break;
                 }
-                case TOP: {
-
+                case TOP:
+                {
                     height = (TopContainerHeight);
                     width = MeasureHorizontalCardWidth(height) + 1;
                     lp = new LinearLayout.LayoutParams(width, height);
-                    if (i > 0) {
-                        lp.leftMargin = (int)( MeasureHorizontalMarginStart(width) * 1.3f);
+                    if (i > 0)
+                    {
+                        lp.leftMargin = (int) (MeasureHorizontalMarginStart(width) * 1.3f);
                     }
                     break;
                 }
             }
             PokeCollections[position].addView(iv, lp);
         }
-
-
     }
 
-    private ImageView CreatePokeImageView() {
+    private ImageView CreatePokeImageView()
+    {
         ImageView iv = new ImageView(mContext);
         iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
         return iv;
     }
 
     // 自己出牌用
-    private void PutCardToShowContainer(List<ImageView> SelfCardImageView) {
-        for (int i = 0; i < SelfCardImageView.size(); i++) {
-            ImageView iv = SelfCardImageView.get(i);
+    private void PutCardToShowContainer(List<ImageView> selectedCardView)
+    {
+        for (int i = 0; i < selectedCardView.size(); i++)
+        {
+            ImageView iv = selectedCardView.get(i);
             // 把这张牌从手牌中移除
             PokeCollections[SELF].removeView(iv);
             SelfCardImageList.remove(iv);
@@ -435,16 +499,19 @@ public class CardDesk extends ConstraintLayout {
             int width = MeasureHorizontalCardWidth(height);
             lp.width = width;
             lp.height = height;
-            if (i > 0) {
+            if (i > 0)
+            {
                 lp.leftMargin = MeasureHorizontalMarginStart(width);
-            } else {
+            } else
+            {
                 lp.leftMargin = 0;
             }
             ShowPokeCollections[SELF].addView(iv, lp);
             Log.d("CardDesk", String.valueOf(ShowPokeCollections[SELF].getWidth()));
         }
         // 修复第一张牌的偏移
-        if(!SelfCardImageList.isEmpty()) {
+        if (!SelfCardImageList.isEmpty())
+        {
             ImageView iv = SelfCardImageList.get(0);
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) iv.getLayoutParams();
             lp.leftMargin = 0;
@@ -453,24 +520,29 @@ public class CardDesk extends ConstraintLayout {
     }
 
     // 别的玩家出牌用
-    private void PutCardToShowContainer(int position, List<Card> cards) {
-        try {
+    private void PutCardToShowContainer(int position, List<Card> cards)
+    {
+        try
+        {
             List<Integer> drawRes = AppUtil.ConvertCardToDrawable(cards);
 
-            for (int i = 0; i < cards.size(); i++) {
+            for (int i = 0; i < cards.size(); i++)
+            {
                 ImageView iv = CreatePokeImageView();
                 Glide.with(mContext)
                         .load(drawRes.get(i))
-                        .transform(new RoundImageTransform(mContext,20,4))
+                        .transform(new RoundImageTransform(mContext, 20, 4))
                         .dontAnimate()
                         .into(iv);
 
                 int height = (VerticalShowContainerHeight);
                 int width = MeasureHorizontalCardWidth(height);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
-                if (i > 0) {
-                    lp.leftMargin = (int)( MeasureHorizontalMarginStart(width) * 1.3f);
-                } else {
+                if (i > 0)
+                {
+                    lp.leftMargin = (int) (MeasureHorizontalMarginStart(width) * 1.3f);
+                } else
+                {
                     lp.leftMargin = 0;
                 }
                 ShowPokeCollections[position].addView(iv, lp);
@@ -478,11 +550,16 @@ public class CardDesk extends ConstraintLayout {
             // 都是牌的背面，只要随便Remove掉足够数量的牌即可
 
             int childCnt = PokeCollections[position].getChildCount();
-            for (int i = childCnt - 1; i >= childCnt - cards.size(); i--) {
+            for (int i = childCnt - 1; i >= childCnt - cards.size(); i--)
+            {
                 PokeCollections[position].removeViewAt(i);
             }
 
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException e)
+        {
+            e.printStackTrace();
+        } catch (IllegalAccessException e)
+        {
             e.printStackTrace();
         }
     }
@@ -493,7 +570,8 @@ public class CardDesk extends ConstraintLayout {
         NotShowTextViews[SELF].setVisibility(VISIBLE);
     }
 
-    public void SelectCard(Player self) {
+    public void SelectCard(Player self)
+    {
         // 此函数用于我方出牌, 牌面选择完成之后内部调用有参的SelectCard显示出牌信息
 
         // Get all selected card
@@ -502,68 +580,85 @@ public class CardDesk extends ConstraintLayout {
         List<Integer> SelectedCardIndex = new ArrayList<>();
         List<Card> SelectedCard = new ArrayList<>();
         // 先检测当前有哪些牌是被选中的
-        for (int i = 0; i < SelfCardStatus.size(); i++) {
-            if (SelfCardStatus.get(i)) {
+        for (int i = 0; i < SelfCardStatus.size(); i++)
+        {
+            if (SelfCardStatus.get(i))
+            {
                 ImageView iv = (ImageView) PokeCollections[SELF].getChildAt(i);
                 Selectediv.add(iv);
                 SelectedCardIndex.add(i);
                 SelectedCard.add(PlayerAllCard.get(i));
             }
         }
+
+
         Collections.fill(SelfCardStatus, false);
-        for (int i = 0; i < SelectedCardIndex.size(); i++) {
+        for (int i = 0; i < SelectedCardIndex.size(); i++)
+        {
             SelfCardStatus.remove(0);
         }
 
-        if (!Selectediv.isEmpty()) {
+        if (!Selectediv.isEmpty())
+        {
             PutCardToShowContainer(Selectediv);
             AllHadShownCard[SELF].addAll(SelectedCard);
             self.ShowCard(SelectedCardIndex);
-        } else {
+        } else
+        {
             // TODO 显示不出
             SelectNoCard(Self);
         }
     }
 
-    public void SelectCard(int position, List<Card> cards) {
-        if (!cards.isEmpty()) {
+    public void SelectCard(int position, List<Card> cards)
+    {
+        if (!cards.isEmpty())
+        {
             PutCardToShowContainer(position, cards);
             AllHadShownCard[position].addAll(cards);
-        } else {
+        } else
+        {
             NotShowTextViews[position].setVisibility(VISIBLE);
         }
     }
 
-    public List<Card>[] GetAllHadShownCards() {
+    public List<Card>[] GetAllHadShownCards()
+    {
         return AllHadShownCard;
     }
 
-    public void NewTurn() {
+    public void NewTurn()
+    {
         // 新的一轮，把场上出的全部牌给清除掉
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
+        {
             AllHadShownCard[i].clear();
             ShowPokeCollections[i].removeAllViews();
             NotShowTextViews[i].setVisibility(GONE);
         }
     }
 
-    public void NewCompetition(Player self) {
+    public void NewCompetition(Player self)
+    {
         Self = self;
         SelfCardImageList = new ArrayList<>();
         SelfCardStatus = new ArrayList<>(13);
         SelfCardMoveLock = new ArrayList<>(13);
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 13; i++)
+        {
             SelfCardStatus.add(false);
             SelfCardMoveLock.add(false);
         }
 
         AllHadShownCard = new List[4];
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
+        {
             AllHadShownCard[i] = new ArrayList<>();
         }
 
-        if (IsMeasuringChildView) {
+        if (IsMeasuringChildView)
+        {
             PendingOnMeasureChildView.add(() -> {
                 // 牌桌不持有任何玩家牌信息，只持有牌的图片
                 LoadSelfCardsAsImageToContainer(self.GetHandCards());
@@ -571,7 +666,8 @@ public class CardDesk extends ConstraintLayout {
                 LoadOtherPlayerCardsAsImageToContainer(13, TOP);
                 LoadOtherPlayerCardsAsImageToContainer(13, LEFT);
             });
-        } else {
+        } else
+        {
             // 牌桌不持有任何玩家牌信息，只持有牌的图片
             LoadSelfCardsAsImageToContainer(self.GetHandCards());
             LoadOtherPlayerCardsAsImageToContainer(13, RIGHT);
@@ -579,6 +675,5 @@ public class CardDesk extends ConstraintLayout {
             LoadOtherPlayerCardsAsImageToContainer(13, LEFT);
         }
     }
-
 
 }
