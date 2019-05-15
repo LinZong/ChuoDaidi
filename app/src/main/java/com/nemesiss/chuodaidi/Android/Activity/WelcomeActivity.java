@@ -16,9 +16,10 @@ public class WelcomeActivity extends ChuoDaidiActivity
     private int CurrentFragmentTag = -1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_welcome);
         fragments = new BaseGameFragment[6];
         fm = getSupportFragmentManager();

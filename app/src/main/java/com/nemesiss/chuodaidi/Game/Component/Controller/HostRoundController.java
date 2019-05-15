@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
@@ -86,7 +87,6 @@ public class HostRoundController implements BaseRoundController {
                 // 如果是SELF，通知牌桌隐藏出牌按钮
                 HidePokeControlPanelForMySelf();
 
-
                 CountDown.Cancel();
                 Bundle data = msg.getData();
 
@@ -118,10 +118,9 @@ public class HostRoundController implements BaseRoundController {
             }
             case RoundControllerMessage.SHOW_CARD_OVERTIME:{
 
-
                 HidePokeControlPanelForMySelf();
                 // 不出
-                GameCardDesk.ShowCards(NextTurn,new ArrayList<>());
+                GameCardDesk.ShowCards(GetNextTurn(),new ArrayList<>());
 
                 NextTurn();
                 TakeTurn();
@@ -137,15 +136,20 @@ public class HostRoundController implements BaseRoundController {
         NextTurn = (NextTurn + 1);
     }
 
-    public void GetNextTurn()
+    public synchronized int GetNextTurn()
     {
+        return (NextTurn%4);
+    }
 
+    public synchronized int GetOriginalNextTurn()
+    {
+        return NextTurn;
     }
 
 
     public int GetCurrentTurnPlayerNumber()
     {
-        return AllPlayer[NextTurn].GetPlayerNumber();
+        return AllPlayer[GetNextTurn()].GetPlayerNumber();
     }
 
     @Override
@@ -157,25 +161,34 @@ public class HostRoundController implements BaseRoundController {
     @Override
     public void TakeTurn() {
 
-        if(NextTurn == FirstTurn)
+        int nextTurn = GetNextTurn();
+
+        if(nextTurn == FirstTurn)
         {
             if(FirstEnterGame)
             {
                 FirstEnterGame = false;
                 GameCardDesk.NewTurn();
-                AllPlayer[NextTurn].NotifyTakeTurn();
+                AllPlayer[nextTurn].NotifyTakeTurn();
             }
             // 延迟几秒
             else {
+
                 MessageHandler.postDelayed(() -> {
                     GameCardDesk.NewTurn();
-                    AllPlayer[NextTurn].NotifyTakeTurn();
+                    AllPlayer[nextTurn].NotifyTakeTurn();
                 }, 3000);
             }
         }
         else {
-            AllPlayer[NextTurn].NotifyTakeTurn();
+            AllPlayer[nextTurn].NotifyTakeTurn();
         }
+    }
+
+    @Override
+    public int GetFirstTurn()
+    {
+        return FirstTurn;
     }
 
     @Override
@@ -213,7 +226,6 @@ public class HostRoundController implements BaseRoundController {
             }
         }
         // won't execute.
-
         return 0;
     }
 
@@ -238,6 +250,8 @@ public class HostRoundController implements BaseRoundController {
     public void ShouldExit()
     {
         CountDown.Cancel();
+        // 取消postDelayed消息
+        MessageHandler.removeMessages(0);
         MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD_OVERTIME);
         MessageHandler.removeMessages(RoundControllerMessage.SHOW_CARD);
         MessageHandler.removeMessages(RoundControllerMessage.BEGIN_SHOW_CARD);

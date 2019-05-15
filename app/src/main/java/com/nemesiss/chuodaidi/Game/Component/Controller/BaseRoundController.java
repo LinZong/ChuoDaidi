@@ -17,8 +17,12 @@ public interface BaseRoundController {
     int ROBOTS_GAME = 3;
     int REMOTE_PLAYER_GAME = 4;
 
+    int GetNextTurn();
+    int GetOriginalNextTurn();
     void NextTurn();
     void TakeTurn();
+    int GetFirstTurn();
+
     void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self);
     void HandleShowCard(int Who, List<Card> ShownCard);
     void HandleGameSettle(int Who);

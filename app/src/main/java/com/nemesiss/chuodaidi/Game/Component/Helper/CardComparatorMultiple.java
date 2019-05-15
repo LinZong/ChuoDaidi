@@ -5,13 +5,21 @@ import com.nemesiss.chuodaidi.Game.Model.Card;
 import java.util.List;
 
 public class CardComparatorMultiple {
-    public boolean Compare(List<Card> left, List<Card> right) {
+    private static CardComparator singleComparator;
+
+    static {
+        singleComparator = new CardComparator();
+    }
+
+    public static boolean Compare(List<Card> left, List<Card> right) {
         int length = left.size();
         int o1PointSize1 = CardHelper.GetPointSize(left.get(0).getPoint());
         int o2PointSize1 = CardHelper.GetPointSize(right.get(0).getPoint());
         switch (length) {
+            case 1:{
+                return singleComparator.compare(left.get(0), right.get(0)) > 0;
+            }
             case 2: {
-
                 if (o1PointSize1 == o2PointSize1) {
                     int o11Size = left.get(0).getPattern().size;
                     int o12Size = left.get(1).getPattern().size;

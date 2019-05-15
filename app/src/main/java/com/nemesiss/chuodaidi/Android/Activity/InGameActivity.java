@@ -2,8 +2,10 @@ package com.nemesiss.chuodaidi.Android.Activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Helper.CardHelper;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
@@ -29,7 +31,7 @@ public class InGameActivity extends ChuoDaidiActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_card_desk);
@@ -80,8 +82,9 @@ public class InGameActivity extends ChuoDaidiActivity
 
         List[] cards = CardHelper.GetShuffledCardGroups();
         // 启动轮次控制器
-
         roundController = new HostRoundController(InGameActivity.this, InGameCardDesk);
+        InGameCardDesk.SetRoundController(roundController);
+
 
         FakeRobots = new ArrayList<>();
         FakeRobots.add(new RobotPlayer(roundController, 1, InGameCardDesk));
@@ -101,10 +104,26 @@ public class InGameActivity extends ChuoDaidiActivity
             });
         });
 
+
+
     }
 
     private void PrepareRemotePlayersCompetition()
     {
 
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        new GameDialogNew.Builder()
+                .with(this)
+                .setTitle("中途离开游戏")
+                .setText("注意!中途退出游戏将会受到严厉的惩罚!确定要中途退出吗?")
+                .setPositiveButton("确定",(v) -> finish())
+                .setNegativeButton("取消",(v) -> {})
+                .Build()
+                .Show();
     }
 }

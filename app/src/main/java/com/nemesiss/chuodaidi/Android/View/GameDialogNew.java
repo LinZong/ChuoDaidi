@@ -1,6 +1,7 @@
 package com.nemesiss.chuodaidi.Android.View;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.*;
@@ -8,20 +9,20 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.Android.Fragment.BaseGameFragment;
 import com.nemesiss.chuodaidi.R;
 
+import java.util.LinkedList;
+
 public class GameDialogNew extends PopupWindow {
 
-    private FrameLayout contentView;
+    private View contentView;
     private Context mContext;
-    private BaseGameFragment parent;
 
-    public GameDialogNew(BaseGameFragment context, FrameLayout view) {
-        super(context.getContext());
-
-        parent = context;
-        mContext = context.getContext();
+    public GameDialogNew(Context context, View view) {
+        super(context);
+        mContext = context;
         contentView = view;
         setContentView(contentView);
 
@@ -43,20 +44,24 @@ public class GameDialogNew extends PopupWindow {
             }
         });
 
+
     }
+
 
     private void DimBackground(float amount)
     {
-        Window parentWindow = parent.getAttachedActivity().getWindow();
-        WindowManager.LayoutParams lp = parentWindow.getAttributes();
-        lp.alpha = amount;
-        parentWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        parentWindow.setAttributes(lp);
+        LinkedList<Activity> activities = ChuoDaidiActivity.getActivities();
+        if(!activities.isEmpty()) {
+            Activity top = activities.getLast();
+            Window wd = top.getWindow();
+            WindowManager.LayoutParams wdlp = wd.getAttributes();
+            wdlp.alpha = amount;
+            wd.setAttributes(wdlp);
+        }
     }
 
     public void Show()
     {
-
         this.showAtLocation(contentView,Gravity.CENTER,0,0);
         DimBackground(0.3f);
     }
@@ -67,6 +72,7 @@ public class GameDialogNew extends PopupWindow {
 
         private FrameLayout layout;
 
+        private Activity activity;
         private BaseGameFragment fragContext;
         private String dialogTitle;
         private String dialogCenterText;
@@ -77,10 +83,21 @@ public class GameDialogNew extends PopupWindow {
 
         private GameDialogNew instance;
 
+        public Builder with(Activity ctx)
+        {
+             activity = ctx;
+            return this;
+        }
         public Builder with(BaseGameFragment ctx)
         {
             fragContext = ctx;
             return this;
+        }
+
+        private Context getContext()
+        {
+            if(activity!=null) return activity;
+            else return fragContext.getContext();
         }
         public Builder setTitle(String title)
         {
@@ -107,10 +124,10 @@ public class GameDialogNew extends PopupWindow {
 
         public GameDialogNew Build()
         {
-            FrameLayout layout = (FrameLayout) LayoutInflater.from(fragContext.getContext()).inflate(R.layout.dialog,null);
+            FrameLayout layout = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.dialog,null);
 
 
-            instance = new GameDialogNew(fragContext,layout);
+            instance = new GameDialogNew(getContext(),layout);
 
             TextView title = layout.findViewById(R.id.Dialog_Title);
             title.setText(dialogTitle);

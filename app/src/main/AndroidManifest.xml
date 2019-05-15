@@ -13,7 +13,7 @@
             android:theme="@style/AppTheme">
         <activity
                 android:name=".Android.Activity.InGameActivity"
-                android:screenOrientation="landscape">
+                android:screenOrientation="userLandscape">
 
         </activity>
         <activity
@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".Android.Activity.WelcomeActivity"
                   android:theme="@style/WelcomeStyle"
-                  android:screenOrientation="landscape">
+                  android:screenOrientation="userLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

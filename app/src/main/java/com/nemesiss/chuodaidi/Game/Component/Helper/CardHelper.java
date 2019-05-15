@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class CardHelper {
+
+    public static Card Diamond3Sample = new Card("3",Card.Pattern.Diamond);
+
     public static List<Card> GetShuffledCard()
     {
         List<Card> shuffle = new ArrayList<>();
@@ -89,6 +92,18 @@ public class CardHelper {
         else {
             return Integer.parseInt(point);
         }
+    }
+
+    public static boolean IsContainDiamond3(List<Card> cards)
+    {
+        for (Card c : cards)
+        {
+            if(c.equals(Diamond3Sample))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -17,6 +17,18 @@ public class ClientRoundController implements BaseRoundController {
     }
 
     @Override
+    public int GetNextTurn()
+    {
+        return 0;
+    }
+
+    @Override
+    public int GetOriginalNextTurn()
+    {
+        return 0;
+    }
+
+    @Override
     public void NextTurn() {
 
     }
@@ -24,6 +36,12 @@ public class ClientRoundController implements BaseRoundController {
     @Override
     public void TakeTurn() {
 
+    }
+
+    @Override
+    public int GetFirstTurn()
+    {
+        return 0;
     }
 
     @Override
