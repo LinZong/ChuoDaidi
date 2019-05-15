@@ -1,6 +1,6 @@
 package com.nemesiss.chuodaidi.Game.Component.Helper;
 
-import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.ArrayList;

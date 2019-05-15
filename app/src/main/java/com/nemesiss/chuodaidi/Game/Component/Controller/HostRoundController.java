@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
-import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Android.View.CountDownTextView;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
@@ -121,7 +121,7 @@ public class HostRoundController implements BaseRoundController {
 
                 HidePokeControlPanelForMySelf();
                 // 不出
-                GameCardDesk.SelectCard(NextTurn,new ArrayList<>());
+                GameCardDesk.ShowCards(NextTurn,new ArrayList<>());
 
                 NextTurn();
                 TakeTurn();
@@ -171,7 +171,6 @@ public class HostRoundController implements BaseRoundController {
             AllPlayer[NextTurn].NotifyTakeTurn();
         }
     }
-
 
     @Override
     public void NewCompetition(List<Player> TogetherPlayer,@NonNull Player Self) {

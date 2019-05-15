@@ -2,7 +2,7 @@ package com.nemesiss.chuodaidi.Game.Component.Player;
 
 import android.os.Message;
 import android.support.annotation.NonNull;
-import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Controller.RoundControllerMessage;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
