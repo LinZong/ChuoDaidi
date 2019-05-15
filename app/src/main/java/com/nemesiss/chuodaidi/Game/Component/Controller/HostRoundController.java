@@ -27,7 +27,7 @@ public class HostRoundController implements BaseRoundController {
 
     // 掌控的玩家
     private Player[] AllPlayer;
-    private int WinnerPlayer = -1;
+
     private int NextTurn = -1;
     private int FirstTurn = -1;
     private boolean FirstEnterGame = true;
@@ -104,7 +104,7 @@ public class HostRoundController implements BaseRoundController {
                     if(WillWin)
                     {
                         Toast.makeText(ChuoDaidiApplication.getContext(),"有人赢了, 游戏结束 " + Who,Toast.LENGTH_SHORT).show();
-                        WinnerPlayer = Who;
+                        
                     }
                     else {
 
@@ -134,8 +134,14 @@ public class HostRoundController implements BaseRoundController {
     @Override
     public void NextTurn() {
         // 计算下一个应该是谁
-        NextTurn = (NextTurn + 1) % 4;
+        NextTurn = (NextTurn + 1);
     }
+
+    public void GetNextTurn()
+    {
+
+    }
+
 
     public int GetCurrentTurnPlayerNumber()
     {
@@ -185,27 +191,38 @@ public class HostRoundController implements BaseRoundController {
         AllPlayer[CardDesk.TOP] = TogetherPlayer.get(1);
         AllPlayer[CardDesk.LEFT] = TogetherPlayer.get(2);
         // 决定谁先开局
-        if(WinnerPlayer != -1) {
-            NextTurn = WinnerPlayer;
-        }
-        else {
-            // 选择NextTurn
-            SecureRandom sr = new SecureRandom();
-            FirstTurn = NextTurn = sr.nextInt(4);
-        }
 
         // 通知CardDesk开启新局
         GameCardDesk.NewCompetition(Self);
+        FirstTurn = NextTurn = JudgeFirstTurnPlayer();
         // 开始轮转
         TakeTurn();
     }
 
+    @Override
+    public int JudgeFirstTurnPlayer() {
+
+        Card DiamondThree = new Card("3",Card.Pattern.Diamond);
+
+        for (int i = 0; i < AllPlayer.length; i++) {
+            List<Card> handCards = AllPlayer[i].GetHandCards();
+            for (Card hc : handCards) {
+                if(hc.equals(DiamondThree)) {
+                    return i;
+                }
+            }
+        }
+        // won't execute.
+
+        return 0;
+    }
 
     @Override
     public void HandleShowCard(int Who, List<Card> ShownCard) {
         // TODO 把出牌信息广播出去
 
     }
+
 
 
     @Override
@@ -227,4 +244,6 @@ public class HostRoundController implements BaseRoundController {
         MessageHandler.removeMessages(RoundControllerMessage.FINISH_SHOW_CARD);
         MessageHandler.removeMessages(RoundControllerMessage.SHOWN_ALL_CARD);
     }
+
+
 }

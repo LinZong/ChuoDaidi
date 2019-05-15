@@ -26,4 +26,5 @@ public interface BaseRoundController {
     Player[] GetAllPlayer();
     Handler GetMessageHandler();
     void ShouldExit();
+    int JudgeFirstTurnPlayer();
 }

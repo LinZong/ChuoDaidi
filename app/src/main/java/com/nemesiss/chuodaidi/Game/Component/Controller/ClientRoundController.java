@@ -63,4 +63,9 @@ public class ClientRoundController implements BaseRoundController {
     {
 
     }
+
+    @Override
+    public int JudgeFirstTurnPlayer() {
+        return 0;
+    }
 }

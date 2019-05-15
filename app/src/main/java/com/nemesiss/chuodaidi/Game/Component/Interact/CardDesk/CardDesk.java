@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.Utils.EventProxy;
 import com.nemesiss.chuodaidi.Android.View.ViewProcess.RoundImageTransform;
+import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.BaseMiddleware;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.CardDeskMiddlewarePool;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.MiddlewareType;
@@ -57,10 +58,7 @@ public class CardDesk extends ConstraintLayout
     // 牌面显示控制变量
     private List<Boolean> SelfCardStatus; // 当前玩家手牌选中状态，选中为true，不选为false
     private List<Boolean> SelfCardMoveLock; // 防止触摸事件重复检测的辅助属性
-
-
     private List<ImageView> SelfCardImageList;  // 存玩家手中牌面的ImageView
-
     private List<Card>[] AllHadShownCard;  // 存本轮次中所有已经出的牌
 
 
@@ -74,6 +72,7 @@ public class CardDesk extends ConstraintLayout
     private TextView[] NotShowTextViews;
 
     private Context mContext;
+    private BaseRoundController controller;
 
     //  是否正在测量子容器的宽高
     boolean IsMeasuringChildView = true;
@@ -175,6 +174,16 @@ public class CardDesk extends ConstraintLayout
 
     public boolean AddMiddleware(int MiddlewareType,BaseMiddleware middleware) {
         return middlewarePool.AddMiddleware(MiddlewareType, middleware);
+    }
+
+    public void SetRoundController(BaseRoundController rc)
+    {
+        controller = rc;
+    }
+
+    public BaseRoundController GetRoundController()
+    {
+        return controller;
     }
 
     private void PrepareChildViewMeasureEventProxy()
