@@ -1,29 +1,36 @@
-package com.nemesiss.chuodaidi.Game.Component.Interact.CardDeskMiddleware;
+package com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware;
 
-import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CardDeskMiddlewarePool
 {
     public HashMap<Integer,List<BaseMiddleware>> MiddlewareQueue;
+    public HashMap<Integer,BaseMiddleware> EndupMiddleware;
     public HashMap<Integer,Integer> MiddlewareIterator;
     private CardDesk mCardDesk;
 
 
-    public CardDeskMiddlewarePool()
+    public CardDeskMiddlewarePool(CardDesk cd)
     {
+        mCardDesk = cd;
+
         Field[] middleWareFields = MiddlewareType.class.getFields();
         MiddlewareQueue = new HashMap<>();
+        EndupMiddleware = new HashMap<>();
         MiddlewareIterator = new HashMap<>();
+
         for (int i = 0; i < middleWareFields.length; i++)
         {
-            boolean IsStatic = Modifier.isStatic(middleWareFields[i].getModifiers());
-            if(IsStatic) {
+            int mod = middleWareFields[i].getModifiers();
+            boolean IsTarget = Modifier.isStatic(mod) && Modifier.isFinal(mod) && middleWareFields[i].getType().getSimpleName().equals("int");
+            if(IsTarget) {
                 try
                 {
                     int fieldNumber = middleWareFields[i].getInt(null);
@@ -43,6 +50,14 @@ public class CardDeskMiddlewarePool
         List<BaseMiddleware> bm = MiddlewareQueue.get(MiddlewareType);
         if(bm!=null) {
             bm.add(middleware);
+            return true;
+        }
+        return false;
+    }
+    public boolean SetEndupMiddleware(int MiddlewareType,BaseMiddleware middleware) {
+        if(EndupMiddleware!=null) {
+            EndupMiddleware.put(MiddlewareType,middleware);
+            return true;
         }
         return false;
     }
@@ -51,7 +66,7 @@ public class CardDeskMiddlewarePool
     {
         List<BaseMiddleware> bm = MiddlewareQueue.get(MiddlewareType);
         if(bm!=null && !bm.isEmpty()) {
-            MiddlewareIterator.put(MiddlewareType,0);
+            MiddlewareIterator.put(MiddlewareType,1);
             bm.get(0).Handle(mCardDesk, mCardDesk.getContext(), new MiddlewarePipeInterceptor()
             {
                 @Override
@@ -66,7 +81,16 @@ public class CardDeskMiddlewarePool
                     }
                     else {
                         // reset, do nothing.
-                        MiddlewareIterator.put(MiddlewareType,0);
+                        BaseMiddleware endUp =  EndupMiddleware.get(MiddlewareType);
+                        if(endUp!=null) {
+                            endUp.Handle(mCardDesk, mCardDesk.getContext(), new MiddlewarePipeInterceptor() {
+                                @Override
+                                public void next() {
+                                    MiddlewareIterator.put(MiddlewareType,0);
+                                    // reset iter to the first middleware.
+                                }
+                            });
+                        }
                     }
                 }
             });

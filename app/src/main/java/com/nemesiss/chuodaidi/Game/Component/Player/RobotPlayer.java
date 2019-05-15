@@ -3,7 +3,7 @@ package com.nemesiss.chuodaidi.Game.Component.Player;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Model.Card;
@@ -71,7 +71,7 @@ public class RobotPlayer implements Player {
     @Override
     public void HandleTakeTurn() {
         List<Card> show = handCards.subList(0,1);
-        GameCardDesk.SelectCard(PlayerNumber,show);
+        GameCardDesk.ShowCards(PlayerNumber,show);
         List<Integer> showIndex = new ArrayList<>();
         showIndex.add(0);
         ShowCard(showIndex);

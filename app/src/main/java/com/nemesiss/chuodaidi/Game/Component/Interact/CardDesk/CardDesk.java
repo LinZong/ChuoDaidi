@@ -1,11 +1,9 @@
-package com.nemesiss.chuodaidi.Game.Component.Interact;
+package com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.nemesiss.chuodaidi.Android.Activity.MainActivity;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.Utils.EventProxy;
 import com.nemesiss.chuodaidi.Android.View.ViewProcess.RoundImageTransform;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.BaseMiddleware;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.CardDeskMiddlewarePool;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.MiddlewareType;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 import com.nemesiss.chuodaidi.R;
@@ -92,6 +92,8 @@ public class CardDesk extends ConstraintLayout
 
     private Player Self;
 
+    private CardDeskMiddlewarePool middlewarePool = new CardDeskMiddlewarePool(this);
+
     public Button getShowCardButton()
     {
         return ShowCard;
@@ -120,6 +122,7 @@ public class CardDesk extends ConstraintLayout
         super(context);
         mContext = context;
         PrepareChildViewMeasureEventProxy();
+        PrepareInnerMiddleware();
 
     }
 
@@ -133,6 +136,7 @@ public class CardDesk extends ConstraintLayout
         r2 = ta.getFloat(R.styleable.CardDesk_card_r2, 1f);
         ta.recycle();
         PrepareChildViewMeasureEventProxy();
+        PrepareInnerMiddleware();
     }
 
     public CardDesk(Context context, AttributeSet attrs, int defStyleAttr)
@@ -145,6 +149,7 @@ public class CardDesk extends ConstraintLayout
         r2 = ta.getFloat(R.styleable.CardDesk_card_r2, 1f);
         ta.recycle();
         PrepareChildViewMeasureEventProxy();
+        PrepareInnerMiddleware();
     }
 
     @Override
@@ -154,6 +159,23 @@ public class CardDesk extends ConstraintLayout
         if (IsMeasuringChildView) Init();
     }
 
+    private void PrepareInnerMiddleware()
+    {
+
+        middlewarePool.AddMiddleware(MiddlewareType.BEFORE_SHOW_CARD,new CardValidator());
+
+        middlewarePool.SetEndupMiddleware(MiddlewareType.BEFORE_SHOW_CARD, new BaseMiddleware() {
+            @Override
+            public void Handle(CardDesk deskSelf, Context context, CardDeskMiddlewarePool.MiddlewarePipeInterceptor nextTrigger) {
+                ShowCards(Self);
+                nextTrigger.next();
+            }
+        });
+    }
+
+    public boolean AddMiddleware(int MiddlewareType,BaseMiddleware middleware) {
+        return middlewarePool.AddMiddleware(MiddlewareType, middleware);
+    }
 
     private void PrepareChildViewMeasureEventProxy()
     {
@@ -220,8 +242,11 @@ public class CardDesk extends ConstraintLayout
         ShowCard = findViewById(R.id.PickCard);
         PassCard = findViewById(R.id.PassCard);
 
-        ShowCard.setOnClickListener((v) -> SelectCard(Self));
-        PassCard.setOnClickListener((v) -> SelectNoCard(Self));
+        ShowCard.setOnClickListener((v) ->
+                middlewarePool.ExecuteMiddlewares(MiddlewareType.BEFORE_SHOW_CARD));
+
+        PassCard.setOnClickListener((v) ->
+                ShowNoCards(Self));
 
         PokeCollections = new LinearLayout[4];
         ShowPokeCollections = new LinearLayout[4];
@@ -564,13 +589,13 @@ public class CardDesk extends ConstraintLayout
         }
     }
 
-    public void SelectNoCard(Player self)
+    public void ShowNoCards(Player self)
     {
         self.ShowCard(new ArrayList<>());
         NotShowTextViews[SELF].setVisibility(VISIBLE);
     }
 
-    public void SelectCard(Player self)
+    public void ShowCards(Player self)
     {
         // 此函数用于我方出牌, 牌面选择完成之后内部调用有参的SelectCard显示出牌信息
 
@@ -606,11 +631,11 @@ public class CardDesk extends ConstraintLayout
         } else
         {
             // TODO 显示不出
-            SelectNoCard(Self);
+            ShowNoCards(Self);
         }
     }
 
-    public void SelectCard(int position, List<Card> cards)
+    public void ShowCards(int position, List<Card> cards)
     {
         if (!cards.isEmpty())
         {
