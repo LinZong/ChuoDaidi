@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
@@ -173,9 +174,10 @@ public class HostRoundController implements BaseRoundController {
             }
             // 延迟几秒
             else {
-
+                CountDown.setVisibility(View.GONE);
                 MessageHandler.postDelayed(() -> {
                     GameCardDesk.NewTurn();
+                    CountDown.setVisibility(View.VISIBLE);
                     AllPlayer[nextTurn].NotifyTakeTurn();
                 }, 3000);
             }
