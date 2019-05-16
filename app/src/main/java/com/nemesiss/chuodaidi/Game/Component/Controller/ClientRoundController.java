@@ -29,6 +29,12 @@ public class ClientRoundController implements BaseRoundController {
     }
 
     @Override
+    public boolean IsFirstTurn()
+    {
+        return false;
+    }
+
+    @Override
     public void NextTurn() {
 
     }

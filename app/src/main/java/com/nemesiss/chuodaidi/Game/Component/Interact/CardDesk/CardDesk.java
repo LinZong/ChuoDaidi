@@ -664,12 +664,11 @@ public class CardDesk extends ConstraintLayout
     public void NewTurn()
     {
         // 新的一轮，把场上出的全部牌给清除掉
-        for (int i = 0; i < 4; i++)
-        {
-            AllHadShownCard[i].clear();
-            ShowPokeCollections[i].removeAllViews();
-            NotShowTextViews[i].setVisibility(GONE);
-        }
+
+        int i = controller.GetNextTurn();
+        AllHadShownCard[i].clear();
+        ShowPokeCollections[i].removeAllViews();
+        NotShowTextViews[i].setVisibility(GONE);
     }
 
     public void NewCompetition(Player self)

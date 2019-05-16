@@ -6,6 +6,7 @@ import android.util.Log;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
+import com.nemesiss.chuodaidi.Game.Component.RobotAI.ShowCardRules;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class RobotPlayer implements Player {
     private BaseRoundController roundController;
     private int PlayerNumber;
     private CardDesk GameCardDesk;
+
+    private boolean IamFirst = false;
 
     public RobotPlayer(BaseRoundController rc, int MyNumber, CardDesk cardDesk)
     {
@@ -58,6 +61,7 @@ public class RobotPlayer implements Player {
             handCards.remove(card);
         }
 
+        GameCardDesk.ShowCards(GetPlayerNumber(),selected);
         Message msg = GameHelper.BuildSelectCardMessage(PlayerNumber,selected,handCards.size() == 0);
         roundController.GetMessageHandler().sendMessage(msg);
     }
@@ -70,10 +74,42 @@ public class RobotPlayer implements Player {
 
     @Override
     public void HandleTakeTurn() {
-        List<Card> show = handCards.subList(0,1);
-        GameCardDesk.ShowCards(PlayerNumber,show);
-        List<Integer> showIndex = new ArrayList<>();
-        showIndex.add(0);
-        ShowCard(showIndex);
+
+        if(roundController.IsFirstTurn())
+        {
+            List<Card> shown = ShowCardRules.DetermineShowCard(handCards,null,true);
+            List<Integer> shownIndex = GetShowCardIndex(shown);
+            ShowCard(shownIndex);
+            return;
+        }
+        else {
+            int last = (roundController.GetNextTurn() + 4 - 1) % 4;
+            //if(!IamFirst) {
+                List<Card> MyLastHostShownCard = GameCardDesk.GetAllHadShownCards()[last];
+                while (MyLastHostShownCard.isEmpty() && (last + 4 - 1) % 4 != GetPlayerNumber()) {
+                    last = (last + 4 - 1) % 4;
+                    MyLastHostShownCard = GameCardDesk.GetAllHadShownCards()[last];
+
+                }
+                List<Card> shown = ShowCardRules.DetermineShowCard(handCards,MyLastHostShownCard.isEmpty() ? null : MyLastHostShownCard,false);
+                List<Integer> shownIndex = GetShowCardIndex(shown);
+                ShowCard(shownIndex);
+//            }
+//            else {
+//                List<Card> shown = ShowCardRules.DetermineShowCard(handCards,null,false);
+//                List<Integer> shownIndex = GetShowCardIndex(shown);
+//                ShowCard(shownIndex);
+//            }
+//            return;
+        }
+    }
+    private List<Integer> GetShowCardIndex(List<Card> hc)
+    {
+        List<Integer> result = new ArrayList<>();
+        for (Card card : hc)
+        {
+            result.add(handCards.indexOf(card));
+        }
+        return result;
     }
 }

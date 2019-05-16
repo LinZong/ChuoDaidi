@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
@@ -16,7 +15,6 @@ import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 import com.nemesiss.chuodaidi.R;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -147,6 +145,12 @@ public class HostRoundController implements BaseRoundController {
         return NextTurn;
     }
 
+    @Override
+    public boolean IsFirstTurn()
+    {
+        return GetOriginalNextTurn() == GetFirstTurn();
+    }
+
 
     public int GetCurrentTurnPlayerNumber()
     {
@@ -164,26 +168,20 @@ public class HostRoundController implements BaseRoundController {
 
         int nextTurn = GetNextTurn();
 
-        if(nextTurn == FirstTurn)
+
+        if(nextTurn == FirstTurn && FirstEnterGame)
         {
-            if(FirstEnterGame)
-            {
                 FirstEnterGame = false;
                 GameCardDesk.NewTurn();
                 AllPlayer[nextTurn].NotifyTakeTurn();
-            }
-            // 延迟几秒
-            else {
-                CountDown.setVisibility(View.GONE);
-                MessageHandler.postDelayed(() -> {
-                    GameCardDesk.NewTurn();
-                    CountDown.setVisibility(View.VISIBLE);
-                    AllPlayer[nextTurn].NotifyTakeTurn();
-                }, 3000);
-            }
         }
         else {
-            AllPlayer[nextTurn].NotifyTakeTurn();
+            CountDown.setVisibility(View.GONE);
+            MessageHandler.postDelayed(() -> {
+                GameCardDesk.NewTurn();
+                CountDown.setVisibility(View.VISIBLE);
+                AllPlayer[nextTurn].NotifyTakeTurn();
+            }, 1000);
         }
     }
 

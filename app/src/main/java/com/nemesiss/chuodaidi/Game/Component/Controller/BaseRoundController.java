@@ -19,6 +19,7 @@ public interface BaseRoundController {
 
     int GetNextTurn();
     int GetOriginalNextTurn();
+    boolean IsFirstTurn();
     void NextTurn();
     void TakeTurn();
     int GetFirstTurn();

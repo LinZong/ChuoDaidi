@@ -1,4 +1,4 @@
-package com.nemesiss.chuodaidi.Game.Component.Helper;
+package com.nemesiss.chuodaidi.Game.Component.Card;
 
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
@@ -79,10 +79,27 @@ public class CardComparatorMultiple {
                     List<Card> sortRightCards = CardComparator.sortCards(right);
                     Card leftMaxCard = sortLeftCards.get(4);
                     Card rightMaxCard = sortRightCards.get(4);
+                    Card leftSecondBigCard=sortLeftCards.get(3);
+                    Card rightSecondBigCard=sortRightCards.get(3);
                     int leftMiddleCard = CardHelper.GetPointSize(sortLeftCards.get(2).getPoint());
                     int rightMiddleCard = CardHelper.GetPointSize(sortRightCards.get(2).getPoint());
 
-                    if (leftNum == 5 || leftNum == 2 || leftNum == 1) {
+                    if(leftNum==5||leftNum==1)
+                    {
+                       if(leftMaxCard.getPoint().equals("2") && leftSecondBigCard.getPoint().equals("A"))
+                           leftMaxCard=sortLeftCards.get(2);
+                       if(leftMaxCard.getPoint().equals("2"))
+                           leftMaxCard=leftSecondBigCard;
+                        if(rightMaxCard.getPoint().equals("2") && rightSecondBigCard.getPoint().equals("A"))
+                            rightMaxCard=sortRightCards.get(2);
+                        if(rightMaxCard.getPoint().equals("2"))
+                            rightMaxCard=rightSecondBigCard;
+
+                        CardComparator cardComparator = new CardComparator();
+                        int result = cardComparator.compare(leftMaxCard, rightMaxCard);
+                        return (result > 0);
+                    }
+                    if ( leftNum == 2 ) {
                         CardComparator cardComparator = new CardComparator();
                         int result = cardComparator.compare(leftMaxCard, rightMaxCard);
                         return (result > 0);

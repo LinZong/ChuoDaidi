@@ -2,12 +2,11 @@ package com.nemesiss.chuodaidi.Android.Activity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
+import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
-import com.nemesiss.chuodaidi.Game.Component.Helper.CardHelper;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Controller.HostRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Player.LocalPlayer;
@@ -80,7 +79,7 @@ public class InGameActivity extends ChuoDaidiActivity
     private void PrepareRobotsCompetition()
     {
 
-        List[] cards = CardHelper.GetShuffledCardGroups();
+        List[] cards = CardHelper.GetShuffledCardGroup();
         // 启动轮次控制器
         roundController = new HostRoundController(InGameActivity.this, InGameCardDesk);
         InGameCardDesk.SetRoundController(roundController);
