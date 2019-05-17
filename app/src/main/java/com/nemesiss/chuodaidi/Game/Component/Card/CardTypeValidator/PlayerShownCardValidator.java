@@ -1,18 +1,18 @@
-package com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk;
+package com.nemesiss.chuodaidi.Game.Component.Card.CardTypeValidator;
 
 import android.content.Context;
 import android.widget.Toast;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
-import com.nemesiss.chuodaidi.Game.Component.Card.CardComparatorMultiple;
 import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
-import com.nemesiss.chuodaidi.Game.Component.Card.CardValidationRules;
+import com.nemesiss.chuodaidi.Game.Component.Card.Comparator.CardComparatorMultiple;
+import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.BaseMiddleware;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.CardDeskMiddlewarePool;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.List;
 
-public class CardValidator implements BaseMiddleware
+public class PlayerShownCardValidator implements BaseMiddleware
 {
 
     @Override

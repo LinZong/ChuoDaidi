@@ -1,9 +1,9 @@
 package com.nemesiss.chuodaidi.Game.Component.RobotAI;
 
-import com.nemesiss.chuodaidi.Game.Component.Card.CardComparator;
-import com.nemesiss.chuodaidi.Game.Component.Card.CardComparatorMultiple;
+import com.nemesiss.chuodaidi.Game.Component.Card.Comparator.CardComparator;
+import com.nemesiss.chuodaidi.Game.Component.Card.Comparator.CardComparatorMultiple;
 import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
-import com.nemesiss.chuodaidi.Game.Component.Card.CardValidationRules;
+import com.nemesiss.chuodaidi.Game.Component.Card.CardTypeValidator.CardValidationRules;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.ArrayList;

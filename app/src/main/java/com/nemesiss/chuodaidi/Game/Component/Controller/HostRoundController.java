@@ -102,9 +102,7 @@ public class HostRoundController implements BaseRoundController {
                     HandleShowCard(Who, Arrays.asList(shownCard));
                     if(WillWin)
                     {
-                        //Toast.makeText(ChuoDaidiApplication.getContext(),"有人赢了, 游戏结束 " + Who,Toast.LENGTH_SHORT).show();
                         HandleGameSettle(Who);
-
                     }
                     else {
 
@@ -113,7 +111,6 @@ public class HostRoundController implements BaseRoundController {
                         TakeTurn();
                     }
                 }
-
                 break;
             }
             case RoundControllerMessage.SHOW_CARD_OVERTIME:{
@@ -240,7 +237,8 @@ public class HostRoundController implements BaseRoundController {
 
     @Override
     public void HandleGameSettle(int Who) {
-
+        // TODO 把赢牌信息广播出去
+        
     }
 
     @Override

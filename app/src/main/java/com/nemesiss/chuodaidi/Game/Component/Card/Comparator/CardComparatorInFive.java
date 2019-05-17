@@ -1,5 +1,6 @@
-package com.nemesiss.chuodaidi.Game.Component.Card;
+package com.nemesiss.chuodaidi.Game.Component.Card.Comparator;
 
+import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
 import java.util.Comparator;

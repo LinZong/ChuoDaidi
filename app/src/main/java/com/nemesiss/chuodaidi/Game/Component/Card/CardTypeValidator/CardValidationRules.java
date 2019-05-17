@@ -1,4 +1,4 @@
-package com.nemesiss.chuodaidi.Game.Component.Card;
+package com.nemesiss.chuodaidi.Game.Component.Card.CardTypeValidator;
 
 import com.nemesiss.chuodaidi.Game.Model.Card;
 

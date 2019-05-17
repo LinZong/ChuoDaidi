@@ -2,6 +2,7 @@ package com.nemesiss.chuodaidi.Game.Component.Player;
 
 import android.support.annotation.NonNull;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface Player {
     void ShowCard(List<Integer> CardIndex); // 出牌
     void NotifyTakeTurn();// 告知Player轮到他
     void HandleTakeTurn();// Player处理轮到他
+
+    BasePlayerInformation getPlayerInformation();
 }

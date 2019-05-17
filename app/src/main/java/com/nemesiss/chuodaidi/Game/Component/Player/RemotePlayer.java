@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 
 import java.util.List;
 
@@ -55,5 +56,10 @@ public class RemotePlayer implements Player {
     @Override
     public void HandleTakeTurn() {
 
+    }
+
+    @Override
+    public BasePlayerInformation getPlayerInformation() {
+        return null;
     }
 }

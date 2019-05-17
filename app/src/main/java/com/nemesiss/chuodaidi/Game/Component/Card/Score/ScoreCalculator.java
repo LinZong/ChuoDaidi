@@ -1,8 +1,7 @@
-package com.nemesiss.chuodaidi.Game.Component.Card;
+package com.nemesiss.chuodaidi.Game.Component.Card.Score;
 
 public class ScoreCalculator
 {
-
     public int[] GetFinalScore(int[] numberOfCards)
     {
         int[] resultScore = new int[4];

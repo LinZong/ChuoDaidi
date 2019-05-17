@@ -173,6 +173,38 @@
                 app:layout_constraintHorizontal_bias="0.347"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/TopPlayerShowPokeCollection"/>
+        <TextView
+                style="@style/InGameNickNameStyle"
+                android:text="Left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/LeftPlayerNickName" android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="32dp" android:layout_marginLeft="32dp"/>
+        <TextView
+                style="@style/InGameNickNameStyle"
+                android:text="我自己"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/SelfPlayerNickName" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="72dp"
+                android:layout_marginBottom="32dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginRight="16dp"/>
+        <TextView
+                style="@style/InGameNickNameStyle"
+                android:text="Top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TopPlayerNickName" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="72dp" android:layout_marginTop="32dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginLeft="72dp"/>
+        <TextView
+                style="@style/InGameNickNameStyle"
+                android:text="Right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/RightPlayerNickName" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
+                android:layout_marginTop="32dp" app:layout_constraintTop_toTopOf="parent"
+        />
     </com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk>
 
     <com.nemesiss.chuodaidi.Android.View.CountDownTextView android:layout_width="wrap_content"

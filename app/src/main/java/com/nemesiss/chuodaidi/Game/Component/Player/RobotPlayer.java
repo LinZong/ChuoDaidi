@@ -8,25 +8,28 @@ import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.RobotAI.ShowCardRules;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RobotPlayer implements Player {
 
+    private BasePlayerInformation RobotInformation;
+
     private List<Card> handCards;
     private BaseRoundController roundController;
     private int PlayerNumber;
     private CardDesk GameCardDesk;
 
-    private boolean IamFirst = false;
-
-    public RobotPlayer(BaseRoundController rc, int MyNumber, CardDesk cardDesk)
+    public RobotPlayer(BaseRoundController rc, int MyNumber, CardDesk cardDesk, BasePlayerInformation robotInformation)
     {
         roundController = rc;
         SetPlayerNumber(MyNumber);
         GameCardDesk = cardDesk;
+        RobotInformation = robotInformation;
     }
+
 
     @Override
     public int GetPlayerNumber() {
@@ -103,6 +106,12 @@ public class RobotPlayer implements Player {
 //            return;
         }
     }
+
+    @Override
+    public BasePlayerInformation getPlayerInformation() {
+        return RobotInformation;
+    }
+
     private List<Integer> GetShowCardIndex(List<Card> hc)
     {
         List<Integer> result = new ArrayList<>();

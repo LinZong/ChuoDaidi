@@ -6,12 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Android.Activity.MainActivity"
-        android:background="#0A7DAD"
+        android:background="#2452C4"
 >
-    <ImageView android:layout_width="225dp" android:layout_height="349dp"
-               android:id="@+id/TestClipImageCorner" app:layout_constraintEnd_toEndOf="parent"
-               android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-               android:layout_marginStart="8dp" android:layout_marginTop="32dp"
-               app:layout_constraintTop_toTopOf="parent"/>
+    <com.nemesiss.chuodaidi.Android.View.BlackSpinner android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      app:layout_constraintEnd_toEndOf="parent"
+                                                      app:layout_constraintStart_toStartOf="parent"
+                                                      app:layout_constraintTop_toTopOf="parent"
+                                                      android:layout_marginTop="32dp"
+                                                      android:id="@+id/FakeBackSpinner"
+    />
 
 </android.support.constraint.ConstraintLayout>

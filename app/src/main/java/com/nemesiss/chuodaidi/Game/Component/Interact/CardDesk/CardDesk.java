@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.Utils.EventProxy;
 import com.nemesiss.chuodaidi.Android.View.ViewProcess.RoundImageTransform;
+import com.nemesiss.chuodaidi.Game.Component.Card.CardTypeValidator.PlayerShownCardValidator;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.BaseMiddleware;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.CardDeskMiddlewarePool;
@@ -70,6 +71,7 @@ public class CardDesk extends ConstraintLayout
     // 存出牌的容器
     private LinearLayout[] ShowPokeCollections;
     private TextView[] NotShowTextViews;
+    private TextView[] PlayerNickNameTextViews;
 
     private Context mContext;
     private BaseRoundController controller;
@@ -161,7 +163,7 @@ public class CardDesk extends ConstraintLayout
     private void PrepareInnerMiddleware()
     {
 
-        middlewarePool.AddMiddleware(MiddlewareType.BEFORE_SHOW_CARD,new CardValidator());
+        middlewarePool.AddMiddleware(MiddlewareType.BEFORE_SHOW_CARD,new PlayerShownCardValidator());
 
         middlewarePool.SetEndupMiddleware(MiddlewareType.BEFORE_SHOW_CARD, new BaseMiddleware() {
             @Override
@@ -260,23 +262,28 @@ public class CardDesk extends ConstraintLayout
         PokeCollections = new LinearLayout[4];
         ShowPokeCollections = new LinearLayout[4];
         NotShowTextViews = new TextView[4];
+        PlayerNickNameTextViews = new TextView[4];
 
         PokeCollections[SELF] = findViewById(R.id.SelfPokeCollection);
         ShowPokeCollections[SELF] = findViewById(R.id.SelfShowPokeCollection);
         NotShowTextViews[SELF] = findViewById(R.id.SelfNotShow);
+        PlayerNickNameTextViews[SELF] = findViewById(R.id.SelfPlayerNickName);
 
         PokeCollections[RIGHT] = findViewById(R.id.RightPlayerPokeCollection);
         ShowPokeCollections[RIGHT] = findViewById(R.id.RightPlayerShowPokeCollection);
         NotShowTextViews[RIGHT] = findViewById(R.id.RightNotShow);
-
+        PlayerNickNameTextViews[RIGHT] = findViewById(R.id.RightPlayerNickName);
 
         PokeCollections[LEFT] = findViewById(R.id.LeftPlayerPokeCollection);
         ShowPokeCollections[LEFT] = findViewById(R.id.LeftPlayerShowPokeCollection);
         NotShowTextViews[LEFT] = findViewById(R.id.LeftNotShow);
+        PlayerNickNameTextViews[LEFT] = findViewById(R.id.LeftPlayerNickName);
+
 
         PokeCollections[TOP] = findViewById(R.id.TopPlayerPokeCollection);
         ShowPokeCollections[TOP] = findViewById(R.id.TopPlayerShowPokeCollection);
         NotShowTextViews[TOP] = findViewById(R.id.TopNotShow);
+        PlayerNickNameTextViews[TOP] = findViewById(R.id.TopPlayerNickName);
 
 
         //post拿到计算完成后的宽高

@@ -12,6 +12,7 @@
         <item name="colorPrimaryDark">@android:color/black</item>
     </style>
     <style name="WelcomeTextViewStyle">
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="WelcomeButtonStyle">
@@ -19,5 +20,17 @@
         <item name="android:paddingStart">15dp</item>
         <item name="android:background">@drawable/welcome_btn_style</item>
         <item name="android:textColor">@drawable/welcome_btn_font_style</item>
+    </style>
+
+    <style name="InGameNickNameStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:background">#fff</item>
+        <item name="android:popupBackground">#fff</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">17sp</item>
     </style>
 </resources>

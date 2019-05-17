@@ -7,22 +7,27 @@ import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Controller.RoundControllerMessage;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LocalPlayer implements Player {
 
+
+    private BasePlayerInformation PlayerInformation;
+
     private List<Card> handCards;
     private BaseRoundController roundController;
     private int PlayerNumber;
     private CardDesk GameCardDesk;
 
-    public LocalPlayer(BaseRoundController rc,int MyNumber,CardDesk cardDesk)
+    public LocalPlayer(BaseRoundController rc, int MyNumber, CardDesk cardDesk, BasePlayerInformation playerInformation)
     {
         roundController = rc;
         SetPlayerNumber(MyNumber);
         GameCardDesk = cardDesk;
+        PlayerInformation = playerInformation;
     }
 
     @Override
@@ -72,5 +77,10 @@ public class LocalPlayer implements Player {
     public void HandleTakeTurn() {
         // 应答TakeTurn消息，通知自身轮次控制器开始倒计时
         roundController.GetMessageHandler().sendEmptyMessage(RoundControllerMessage.BEGIN_SHOW_CARD);
+    }
+
+    @Override
+    public BasePlayerInformation getPlayerInformation() {
+        return PlayerInformation;
     }
 }

@@ -86,11 +86,11 @@ public class InGameActivity extends ChuoDaidiActivity
 
 
         FakeRobots = new ArrayList<>();
-        FakeRobots.add(new RobotPlayer(roundController, 1, InGameCardDesk));
-        FakeRobots.add(new RobotPlayer(roundController, 2, InGameCardDesk));
-        FakeRobots.add(new RobotPlayer(roundController, 3, InGameCardDesk));
-
-        self = new LocalPlayer(roundController, 0, InGameCardDesk);
+//        FakeRobots.add(new RobotPlayer(roundController, 1, InGameCardDesk));
+//        FakeRobots.add(new RobotPlayer(roundController, 2, InGameCardDesk));
+//        FakeRobots.add(new RobotPlayer(roundController, 3, InGameCardDesk));
+//
+//        self = new LocalPlayer(roundController, 0, InGameCardDesk);
 
         FakeRobots.get(0).InitSetHandCards(cards[CardDesk.RIGHT]);
         FakeRobots.get(1).InitSetHandCards(cards[CardDesk.TOP]);
