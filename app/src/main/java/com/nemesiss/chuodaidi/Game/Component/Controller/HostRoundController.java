@@ -102,8 +102,9 @@ public class HostRoundController implements BaseRoundController {
                     HandleShowCard(Who, Arrays.asList(shownCard));
                     if(WillWin)
                     {
-                        Toast.makeText(ChuoDaidiApplication.getContext(),"有人赢了, 游戏结束 " + Who,Toast.LENGTH_SHORT).show();
-                        
+                        //Toast.makeText(ChuoDaidiApplication.getContext(),"有人赢了, 游戏结束 " + Who,Toast.LENGTH_SHORT).show();
+                        HandleGameSettle(Who);
+
                     }
                     else {
 
