@@ -2,6 +2,7 @@ package com.nemesiss.chuodaidi.Android.View;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.nemesiss.chuodaidi.Android.Adapter.BlackSpinnerAdapter;
-import com.nemesiss.chuodaidi.Android.Adapter.FakeSpinnerAdapter;
 import com.nemesiss.chuodaidi.Android.View.ViewProcess.BlackSpinner.BlackSpinnerExpandAnimation;
 import com.nemesiss.chuodaidi.R;
 
@@ -32,6 +32,7 @@ public class BlackSpinner extends RelativeLayout {
     private boolean IsExpanded = false;
 
     private int SelectedItemListOriginalHeight = 0;
+    private int ConstraintExpandHeight = -1;
 
     public BlackSpinner(Context context) {
         super(context);
@@ -40,11 +41,19 @@ public class BlackSpinner extends RelativeLayout {
 
     public BlackSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.BlackSpinner);
+        ConstraintExpandHeight =  ta.getInteger(R.styleable.BlackSpinner_expandHeight,-1);
+        ta.recycle();
+
         InitInnerComponents();
    }
 
     public BlackSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.BlackSpinner);
+        ConstraintExpandHeight =  ta.getInteger(R.styleable.BlackSpinner_expandHeight,-1);
+        ta.recycle();
+
         InitInnerComponents();
     }
 
@@ -60,7 +69,12 @@ public class BlackSpinner extends RelativeLayout {
 
         // Measure SpinnerItemList Original Height.
         SpinnerItemList.post(() -> {
-            SelectedItemListOriginalHeight = SpinnerItemList.getHeight();
+            if(ConstraintExpandHeight != -1) {
+                SelectedItemListOriginalHeight = ConstraintExpandHeight;
+            }
+            else {
+                SelectedItemListOriginalHeight = SpinnerItemList.getHeight();
+            }
             SpinnerItemList.setVisibility(GONE);
         });
 
@@ -104,7 +118,7 @@ public class BlackSpinner extends RelativeLayout {
         View view = vh.itemView;
 
         SelectedItem.removeAllViews();
-        FakeSpinnerAdapter.FixPadding(view);
+        BlackSpinnerAdapter.FixPadding(view);
 
         SelectedItem.addView(vh.itemView);
     }

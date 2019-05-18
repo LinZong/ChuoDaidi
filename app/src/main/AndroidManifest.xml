@@ -20,6 +20,7 @@
         <activity
                 android:name=".Android.Activity.MainActivity">
 
+
         </activity>
         <activity android:name=".Android.Activity.WelcomeActivity"
                   android:theme="@style/WelcomeStyle"

@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.nemesiss.chuodaidi.Android.Adapter.RobotSelectionAdapter;
+import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.View.BlackSpinner;
 import com.nemesiss.chuodaidi.Android.View.GameDialog;
 import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
@@ -25,21 +26,12 @@ import com.nemesiss.chuodaidi.R;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.List;
 
 public class PlayerTypeFragment extends BaseGameFragment
 {
     private Unbinder unbinder;
-    private RobotSelectionAdapter rightRobot;
-    private RobotSelectionAdapter leftRobot;
-    private RobotSelectionAdapter topRobot;
 
-    private BasePlayerInformation selectedFirst;
-    private BasePlayerInformation selectedSecond;
-    private BasePlayerInformation selectedThird;
-
-    private BlackSpinner rightRobotSpinner;
-    private BlackSpinner leftRobotSpinner;
-    private BlackSpinner topRobotSpinner;
 
     @Nullable
     @Override
@@ -47,7 +39,7 @@ public class PlayerTypeFragment extends BaseGameFragment
     {
         view = inflater.inflate(R.layout.play_type_func_frag, container, false);
         unbinder = ButterKnife.bind(this, view);
-        return view;
+       return view;
     }
 
     @Override
@@ -60,44 +52,8 @@ public class PlayerTypeFragment extends BaseGameFragment
     @OnClick({R.id.Welcome_PlayWithRobot})
     public void PlayWithRobots()
     {
-        View view = LoadRobotsPlayerSelection();
-
-        GameDialogNew dialog = new GameDialogNew.Builder()
-                .with(this)
-                .setTitle("选择与之一战的机器人")
-                .setPositiveButton("确定", (v) -> {
-
-                    // inject robots info
-
-                    Intent intent = GameHelper.BuildRobotsPlayIntent(AttachedActivity);
-                    AttachedActivity.runOnUiThread(() -> {
-                        startActivity(intent);
-                    });
-                })
-                .setNegativeButton("取消", null)
-                .Build(view);
-
-        dialog.Show();
-    }
-
-
-    private View LoadRobotsPlayerSelection()
-    {
-        rightRobot = new RobotSelectionAdapter(Arrays.asList(RobotCharactersExport.AllRobotCharacters));
-        leftRobot = new RobotSelectionAdapter(Arrays.asList(RobotCharactersExport.AllRobotCharacters));
-        topRobot = new RobotSelectionAdapter(Arrays.asList(RobotCharactersExport.AllRobotCharacters));
-
-        View innerSelection = View.inflate(getContext(), R.layout.select_three_robots, null);
-
-        rightRobotSpinner = innerSelection.findViewById(R.id.Select_RightRobot);
-        leftRobotSpinner = innerSelection.findViewById(R.id.Select_Left_Robot);
-        topRobotSpinner = innerSelection.findViewById(R.id.Select_TopRobot);
-
-        rightRobotSpinner.setAdapter(rightRobot);
-        leftRobotSpinner.setAdapter(leftRobot);
-        topRobotSpinner.setAdapter(topRobot);
-
-        return innerSelection;
+        AppUtil.LoadFragmentToActivity(AttachedActivity,R.id.WelcomeFuncFragmentContainer,new RobotCharacterSelectFragment());
+        AttachedActivity.ExpandSelectionFragmentArea();
     }
 
 

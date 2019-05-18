@@ -9,4 +9,8 @@
     <declare-styleable name="RoundImageView">
         <attr name="corner_radius" format="float"/>
     </declare-styleable>
+
+    <declare-styleable name="BlackSpinner">
+        <attr name="expandHeight" format="integer"/>
+    </declare-styleable>
 </resources>
