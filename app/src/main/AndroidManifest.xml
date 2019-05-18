@@ -19,15 +19,15 @@
         </activity>
         <activity
                 android:name=".Android.Activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity android:name=".Android.Activity.WelcomeActivity"
                   android:theme="@style/WelcomeStyle"
                   android:screenOrientation="userLandscape">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 </manifest>

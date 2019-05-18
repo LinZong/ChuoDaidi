@@ -115,7 +115,7 @@ public class GameDialog
             TextView title = layout.findViewById(R.id.Dialog_Title);
             title.setText(dialogTitle);
 
-            TextView innerText = layout.findViewById(R.id.Dialog_InnerText);
+            TextView innerText = layout.findViewById(R.id.Dialog_InnerView);
             innerText.setText(dialogCenterText);
 
             Button positive = layout.findViewById(R.id.Dialog_PositiveBtn);

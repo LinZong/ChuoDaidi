@@ -126,14 +126,41 @@ public class GameDialogNew extends PopupWindow {
         {
             FrameLayout layout = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.dialog,null);
 
-
             instance = new GameDialogNew(getContext(),layout);
 
             TextView title = layout.findViewById(R.id.Dialog_Title);
             title.setText(dialogTitle);
 
-            TextView innerText = layout.findViewById(R.id.Dialog_InnerText);
+            TextView innerText = layout.findViewById(R.id.Dialog_InnerView);
             innerText.setText(dialogCenterText);
+
+            Button positive = layout.findViewById(R.id.Dialog_PositiveBtn);
+            Button negative = layout.findViewById(R.id.Dialog_NegativeBtn);
+
+            positive.setText(dialogPositiveButtonText);
+            negative.setText(dialogNegativeButtonText);
+
+            positive.setOnClickListener(OnClickListenerWrapper(dialogPositiveBtnOnClick));
+            negative.setOnClickListener(OnClickListenerWrapper(dialogNegativeBtnOnClick));
+            return instance;
+
+        }
+
+
+        public GameDialogNew Build(View view)
+        {
+            // 加载整个dialog布局
+            FrameLayout layout = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.view_dialog,null);
+
+            // 将传入的子布局给add 进去
+            FrameLayout innerLayout = layout.findViewById(R.id.Dialog_InnerView);
+
+            innerLayout.addView(view);
+
+            instance = new GameDialogNew(getContext(),layout);
+
+            TextView title = layout.findViewById(R.id.Dialog_Title);
+            title.setText(dialogTitle);
 
             Button positive = layout.findViewById(R.id.Dialog_PositiveBtn);
             Button negative = layout.findViewById(R.id.Dialog_NegativeBtn);

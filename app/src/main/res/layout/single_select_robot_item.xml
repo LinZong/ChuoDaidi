@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="robot" type="com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation"/>
+    </data>
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/Spinner_SingleText"
+              style="@style/WelcomeTextViewStyle"
+              android:text="@{robot.nickName}"
+              android:textSize="10sp"
+
+    />
+</layout>

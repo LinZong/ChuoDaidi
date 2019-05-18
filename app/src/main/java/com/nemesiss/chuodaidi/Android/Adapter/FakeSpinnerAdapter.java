@@ -12,10 +12,9 @@ import com.nemesiss.chuodaidi.R;
 
 import java.util.List;
 
-public class FakeSpinnerAdapter extends RecyclerView.Adapter<FakeSpinnerAdapter.SpinnerItemHolder> {
+public class FakeSpinnerAdapter extends BlackSpinnerAdapter<FakeSpinnerAdapter.SpinnerItemHolder> {
 
     private List<String> spinners;
-    private OnChildItemClickedListener mListener;
 
     public FakeSpinnerAdapter(List<String> content)
     {
@@ -26,7 +25,10 @@ public class FakeSpinnerAdapter extends RecyclerView.Adapter<FakeSpinnerAdapter.
     @Override
     public SpinnerItemHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.test_single_spinner_item,viewGroup,false);
+                .inflate(R.layout.single_select_robot_item,viewGroup,false);
+        if(i == 0) {
+            FixPadding(view);
+        }
         return new SpinnerItemHolder(view);
     }
 
@@ -49,7 +51,7 @@ public class FakeSpinnerAdapter extends RecyclerView.Adapter<FakeSpinnerAdapter.
         return spinners.size();
     }
 
-    class SpinnerItemHolder extends RecyclerView.ViewHolder
+    public class SpinnerItemHolder extends RecyclerView.ViewHolder
     {
         @BindView(R.id.Spinner_SingleText)
         TextView inner;
@@ -60,13 +62,4 @@ public class FakeSpinnerAdapter extends RecyclerView.Adapter<FakeSpinnerAdapter.
     }
 
 
-    public interface OnChildItemClickedListener
-    {
-        void handle(int position);
-    }
-
-    public void setOnChildItemClickedListener(OnChildItemClickedListener listener)
-    {
-        mListener = listener;
-    }
 }
