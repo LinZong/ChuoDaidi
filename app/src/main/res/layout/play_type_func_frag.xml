@@ -10,7 +10,7 @@
             android:text="PLAY WITH ROBOT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Welcome_PlayWithRobot" android:layout_marginTop="24dp"
+            android:id="@+id/Welcome_PlayWithRobot" android:layout_marginTop="50dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>

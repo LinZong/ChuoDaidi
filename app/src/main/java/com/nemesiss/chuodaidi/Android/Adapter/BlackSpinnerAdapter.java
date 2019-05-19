@@ -30,6 +30,6 @@ public abstract class BlackSpinnerAdapter<VH extends RecyclerView.ViewHolder> ex
                 right = view.getPaddingRight(),
                 bottom = view.getPaddingBottom();
         view.setPadding(left,top,right,bottom);
-    }
+     }
 
 }

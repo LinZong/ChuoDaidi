@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddlewar
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.MiddlewareType;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 import com.nemesiss.chuodaidi.R;
 
 import java.util.*;
@@ -92,6 +94,7 @@ public class CardDesk extends ConstraintLayout
     private Button PassCard;
 
     private Player Self;
+    private List<Player> mTogetherPlayer;
 
     private CardDeskMiddlewarePool middlewarePool = new CardDeskMiddlewarePool(this);
 
@@ -676,14 +679,20 @@ public class CardDesk extends ConstraintLayout
         AllHadShownCard[i].clear();
         ShowPokeCollections[i].removeAllViews();
         NotShowTextViews[i].setVisibility(GONE);
+
+        PlayerNickNameTextViews[i].setTextColor(getResources().getColor(R.color.ShowingCardNickName));
+
+        PlayerNickNameTextViews[(i-1 + 4) % 4].setTextColor(getResources().getColor(android.R.color.white));
     }
 
-    public void NewCompetition(Player self)
+    public void NewCompetition(@NonNull Player self, @NonNull List<Player> TogetherPlayer)
     {
         Self = self;
         SelfCardImageList = new ArrayList<>();
         SelfCardStatus = new ArrayList<>(13);
         SelfCardMoveLock = new ArrayList<>(13);
+
+        mTogetherPlayer = TogetherPlayer;
 
         for (int i = 0; i < 13; i++)
         {
@@ -696,6 +705,22 @@ public class CardDesk extends ConstraintLayout
         {
             AllHadShownCard[i] = new ArrayList<>();
         }
+
+        for (int i = 0; i < 4; i++)
+        {
+            ShowPokeCollections[i].removeAllViews();
+            PokeCollections[i].removeAllViews();
+        }
+
+        //显示一起游玩玩家的信息
+
+        for (int i = 0; i < 3 ; i++)
+        {
+            BasePlayerInformation bi = mTogetherPlayer.get(i).getPlayerInformation();
+            PlayerNickNameTextViews[i+1].setText(bi.getNickName());
+        }
+
+        PlayerNickNameTextViews[SELF].setText(Self.getPlayerInformation().getNickName());
 
         if (IsMeasuringChildView)
         {

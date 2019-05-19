@@ -1,6 +1,8 @@
 package com.nemesiss.chuodaidi.Game.Model.PlayerInfo;
 
-public class BasePlayerInformation
+import java.io.Serializable;
+
+public class BasePlayerInformation implements Serializable
 {
     protected String NickName;
     protected int TotalScore = 3000;

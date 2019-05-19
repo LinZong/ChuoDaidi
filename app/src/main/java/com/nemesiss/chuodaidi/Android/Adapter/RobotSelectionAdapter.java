@@ -43,9 +43,10 @@ public class RobotSelectionAdapter extends BlackSpinnerAdapter<RobotSelectionAda
             @Override
             public void onClick(View v)
             {
+                int pos = playerInfoViewHolder.getAdapterPosition();
                 if (mListener != null)
                 {
-                    mListener.handle(playerInfoViewHolder.getAdapterPosition());
+                    mListener.handle(pos);
                 }
             }
         });

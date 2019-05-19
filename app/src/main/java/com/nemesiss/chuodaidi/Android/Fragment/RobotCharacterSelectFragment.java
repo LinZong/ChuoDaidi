@@ -1,5 +1,6 @@
 package com.nemesiss.chuodaidi.Android.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +13,12 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.nemesiss.chuodaidi.Android.Adapter.BlackSpinnerAdapter;
 import com.nemesiss.chuodaidi.Android.Adapter.RobotSelectionAdapter;
+import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
 import com.nemesiss.chuodaidi.Android.View.BlackSpinner;
+import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters.RobotCharactersExport;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.UserInformation;
 import com.nemesiss.chuodaidi.R;
 
 import java.util.Arrays;
@@ -73,40 +77,36 @@ public class RobotCharacterSelectFragment extends BaseGameFragment {
         leftRobotSpinner = view.findViewById(R.id.Select_LeftRobot);
         topRobotSpinner = view.findViewById(R.id.Select_TopRobot);
 
+        selectedRight = robotPlayers.get(0);
+        selectedLeft = robotPlayers.get(0);
+        selectedTop = robotPlayers.get(0);
+
+        rightRobot.setOnChildItemClickedListener(position -> selectedRight = robotPlayers.get(position));
+        leftRobot.setOnChildItemClickedListener(position -> selectedLeft = robotPlayers.get(position));
+        topRobot.setOnChildItemClickedListener(position -> selectedTop = robotPlayers.get(position));
+
         rightRobotSpinner.setAdapter(rightRobot);
         leftRobotSpinner.setAdapter(leftRobot);
         topRobotSpinner.setAdapter(topRobot);
 
-        rightRobot.setOnChildItemClickedListener(new BlackSpinnerAdapter.OnChildItemClickedListener() {
-            @Override
-            public void handle(int position) {
-                selectedRight = robotPlayers.get(position);
-            }
-        });
-        leftRobot.setOnChildItemClickedListener(new BlackSpinnerAdapter.OnChildItemClickedListener() {
-            @Override
-            public void handle(int position) {
-                selectedLeft = robotPlayers.get(position);
-            }
-        });
-        topRobot.setOnChildItemClickedListener(new BlackSpinnerAdapter.OnChildItemClickedListener() {
-            @Override
-            public void handle(int position) {
-                selectedTop = robotPlayers.get(position);
-            }
-        });
     }
 
     @OnClick({R.id.ConfirmEnterGame})
     public void EnterGame(View v)
     {
-
+        UserInformation player = ChuoDaidiApplication.getPlayerInformation();
+        // 严格按照右，上，左的顺序传递数据
+        Intent it = GameHelper.BuildRobotsPlayIntent(AttachedActivity,player,selectedRight,selectedTop,selectedLeft);
+        AttachedActivity.startActivity(it);
     }
 
     @OnClick({R.id.BackToTypeSelection})
     public void BackToTypeSelection(View v)
     {
-
+        if (getFragmentManager() != null)
+        {
+            getFragmentManager().popBackStack();
+        }
     }
 
 }

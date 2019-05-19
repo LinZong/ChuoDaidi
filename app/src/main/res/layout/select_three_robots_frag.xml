@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:background="#000"
-              android:paddingTop="10dp"
+              android:paddingTop="5dp"
 >
     <include layout="@layout/select_three_robots"/>
 
@@ -16,13 +16,13 @@
                   android:layout_height="wrap_content"
                   android:orientation="horizontal">
 
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <Button android:layout_width="wrap_content" android:layout_height="35dp"
                 style="@style/WelcomeButtonStyle"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/BackToTypeSelection"
                 android:text="返回"/>
         <Button android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 style="@style/WelcomeButtonStyle"
                 android:layout_marginStart="8dp"
                 android:id="@+id/ConfirmEnterGame"

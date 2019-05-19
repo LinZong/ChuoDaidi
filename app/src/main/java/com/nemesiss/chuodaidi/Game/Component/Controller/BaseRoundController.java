@@ -17,6 +17,8 @@ public interface BaseRoundController {
     int ROBOTS_GAME = 3;
     int REMOTE_PLAYER_GAME = 4;
 
+    String PLAYER_INFO = "PLAYER_INFO";
+
     int GetNextTurn();
     int GetOriginalNextTurn();
     boolean IsFirstTurn();

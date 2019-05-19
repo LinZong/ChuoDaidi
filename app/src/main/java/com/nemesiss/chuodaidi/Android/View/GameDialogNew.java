@@ -60,10 +60,11 @@ public class GameDialogNew extends PopupWindow {
         }
     }
 
-    public void Show()
+    public GameDialogNew Show()
     {
         this.showAtLocation(contentView,Gravity.CENTER,0,0);
         DimBackground(0.3f);
+        return this;
     }
 
 
@@ -154,6 +155,8 @@ public class GameDialogNew extends PopupWindow {
 
             // 将传入的子布局给add 进去
             FrameLayout innerLayout = layout.findViewById(R.id.Dialog_InnerView);
+
+            innerLayout.removeAllViews();
 
             innerLayout.addView(view);
 

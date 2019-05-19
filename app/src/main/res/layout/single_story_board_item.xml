@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="item" type="com.nemesiss.chuodaidi.Game.Model.ScoreItem"/>
+    </data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content"
+                                                 android:background="#000"
+    >
+
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:textColor="#fff"
+                  android:text="@{item.nickName}"
+                  app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="4dp"
+                  app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                  app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="4dp"
+                  android:id="@+id/ScoreBoardItem_UserNickName" app:layout_constraintEnd_toStartOf="@+id/guideline"
+                  android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.0"/>
+        <TextView android:layout_width="0dp"
+                  android:gravity="center_horizontal"
+                  android:layout_height="wrap_content"
+                  android:textColor="#fff"
+                  android:text='@{item.deltaScore >= 0 ? + item.deltaScore + "" : "-"+item.deltaScore}'
+                  android:id="@+id/ScoreBoardItem_DeltaScore"
+                  app:layout_constraintEnd_toStartOf="@+id/ScoreBoard_EndScore" android:layout_marginEnd="8dp"
+                  app:layout_constraintBottom_toBottomOf="@+id/ScoreBoard_EndScore"
+                  app:layout_constraintStart_toEndOf="@+id/ScoreBoardItem_UserNickName"
+                  app:layout_constraintHorizontal_bias="0.0" android:layout_marginStart="16dp"/>
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:textColor="#fff"
+                  android:text='@{item.endTotalScore >= 0 ? + item.endTotalScore + "" : "-"+item.endTotalScore}'
+                  android:gravity="center_horizontal"
+                  app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:id="@+id/ScoreBoard_EndScore"
+                  app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+                  app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                  app:layout_constraintStart_toEndOf="@+id/ScoreBoardItem_DeltaScore"/>
+        <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                              android:id="@+id/guideline" app:layout_constraintGuide_begin="180dp"
+                                              android:orientation="vertical"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

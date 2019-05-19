@@ -2,7 +2,7 @@ package com.nemesiss.chuodaidi.Game.Component.Card.Score;
 
 public class ScoreCalculator
 {
-    public int[] GetFinalScore(int[] numberOfCards)
+    public static int[] GetFinalScore(int... numberOfCards)
     {
         int[] resultScore = new int[4];
         resultScore[0] = numberOfCards[1] + numberOfCards[2] + numberOfCards[3] - 3 * numberOfCards[0];//玩家得分

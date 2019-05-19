@@ -12,6 +12,8 @@ import com.nemesiss.chuodaidi.Game.Component.Controller.HostRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Player.LocalPlayer;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Component.Player.RobotPlayer;
+import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 import com.nemesiss.chuodaidi.R;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class InGameActivity extends ChuoDaidiActivity
     @BindView(R.id.InGameCardDesk)
     CardDesk InGameCardDesk;
 
+    private BasePlayerInformation[] InGamePlayers;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -37,6 +40,9 @@ public class InGameActivity extends ChuoDaidiActivity
         ButterKnife.bind(this);
         int controllerType = getIntent().getIntExtra(BaseRoundController.CONTROLLER_TYPE, -1);
         int gameType = getIntent().getIntExtra(BaseRoundController.GAME_TYPE, -1);
+
+        InGamePlayers = (BasePlayerInformation[]) getIntent().getSerializableExtra(BaseRoundController.PLAYER_INFO);
+
         switch (controllerType)
         {
             case BaseRoundController.HOST_CONTROLLER:
@@ -79,31 +85,24 @@ public class InGameActivity extends ChuoDaidiActivity
     private void PrepareRobotsCompetition()
     {
 
-        List[] cards = CardHelper.GetShuffledCardGroup();
+
         // 启动轮次控制器
         roundController = new HostRoundController(InGameActivity.this, InGameCardDesk);
         InGameCardDesk.SetRoundController(roundController);
 
 
         FakeRobots = new ArrayList<>();
-//        FakeRobots.add(new RobotPlayer(roundController, 1, InGameCardDesk));
-//        FakeRobots.add(new RobotPlayer(roundController, 2, InGameCardDesk));
-//        FakeRobots.add(new RobotPlayer(roundController, 3, InGameCardDesk));
-//
-//        self = new LocalPlayer(roundController, 0, InGameCardDesk);
+        FakeRobots.add(new RobotPlayer(roundController, CardDesk.RIGHT, InGameCardDesk,InGamePlayers[CardDesk.RIGHT]));
+        FakeRobots.add(new RobotPlayer(roundController, CardDesk.TOP, InGameCardDesk,InGamePlayers[CardDesk.TOP]));
+        FakeRobots.add(new RobotPlayer(roundController, CardDesk.LEFT, InGameCardDesk,InGamePlayers[CardDesk.LEFT]));
 
-        FakeRobots.get(0).InitSetHandCards(cards[CardDesk.RIGHT]);
-        FakeRobots.get(1).InitSetHandCards(cards[CardDesk.TOP]);
-        FakeRobots.get(2).InitSetHandCards(cards[CardDesk.LEFT]);
-        self.InitSetHandCards(cards[CardDesk.SELF]);
+        self = new LocalPlayer(roundController, 0, InGameCardDesk,InGamePlayers[CardDesk.SELF]);
 
         InGameCardDesk.DoAfterCardDeskLoaded(() -> {
             runOnUiThread(() -> {
                 roundController.NewCompetition(FakeRobots,self);
             });
         });
-
-
 
     }
 

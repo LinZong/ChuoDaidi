@@ -4,15 +4,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 import com.nemesiss.chuodaidi.Android.Activity.ChuoDaidiActivity;
-import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
+import com.nemesiss.chuodaidi.Android.Adapter.ScoreItemAdapter;
+import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
+import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
+import com.nemesiss.chuodaidi.Game.Component.Card.Score.ScoreCalculator;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Android.View.CountDownTextView;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.ScoreItem;
 import com.nemesiss.chuodaidi.R;
 
 import java.util.ArrayList;
@@ -21,12 +28,16 @@ import java.util.List;
 
 public class HostRoundController implements BaseRoundController {
 
-
+    // 计分板相关
+    private LinearLayoutManager ScoreBoardLayoutManager;
+    private View TotalScoreBoardView;
+    private RecyclerView ScoreBoardItem;
+    private GameDialogNew HintScoreBoardDialog;
 
     private ChuoDaidiActivity HostGameActivity;
-
     // 掌控的玩家
     private Player[] AllPlayer;
+    private List<Player> mTogetherPlayer;
 
     private int NextTurn = -1;
     private int FirstTurn = -1;
@@ -42,7 +53,16 @@ public class HostRoundController implements BaseRoundController {
 
     public HostRoundController(ChuoDaidiActivity act,CardDesk cd)
     {
+
         HostGameActivity = act;
+
+        // 初始化计分板项目
+        ScoreBoardLayoutManager = new LinearLayoutManager(HostGameActivity);
+        TotalScoreBoardView = LayoutInflater.from(HostGameActivity).inflate(R.layout.score_board,null);
+        ScoreBoardItem = TotalScoreBoardView.findViewById(R.id.ScoreBoardRecyclerView);
+
+        // 初始化轮次控制器项目
+
         MessageHandler = new Handler(this::HandleControllerMessage);
         GameCardDesk = cd;
         CountDown = HostGameActivity.findViewById(R.id.countDownTextView);
@@ -194,8 +214,15 @@ public class HostRoundController implements BaseRoundController {
 
         FirstEnterGame  = true;
 
+        if(HintScoreBoardDialog != null && HintScoreBoardDialog.isShowing()) {
+
+            ((FrameLayout)(HintScoreBoardDialog.getContentView().findViewById(R.id.Dialog_InnerView))).removeView(TotalScoreBoardView);
+            HintScoreBoardDialog.dismiss();
+        }
         // 保存当局的所有Player
         AllPlayer = new Player[4];
+        mTogetherPlayer = TogetherPlayer;
+
         // TODO 检测TogetherPlayer的数目必须正好为3， 检测Self不能为空
         AllPlayer[CardDesk.SELF] = Self;
         AllPlayer[CardDesk.RIGHT] = TogetherPlayer.get(0);
@@ -203,11 +230,14 @@ public class HostRoundController implements BaseRoundController {
         AllPlayer[CardDesk.LEFT] = TogetherPlayer.get(2);
         // 决定谁先开局
 
+        HandlePrepareNewCards(null);
+
         // 通知CardDesk开启新局
-        GameCardDesk.NewCompetition(Self);
+        GameCardDesk.NewCompetition(Self,TogetherPlayer);
         FirstTurn = NextTurn = JudgeFirstTurnPlayer();
         // 开始轮转
-        TakeTurn();
+        //TakeTurn();
+        HandleGameSettle(1);
     }
 
     @Override
@@ -237,9 +267,50 @@ public class HostRoundController implements BaseRoundController {
 
     @Override
     public void HandleGameSettle(int Who) {
-        // TODO 把赢牌信息广播出去
-        
+
+        // 准备显示的得分数据
+        int self = AllPlayer[CardDesk.SELF].GetHandCards().size();
+        int right = AllPlayer[CardDesk.RIGHT].GetHandCards().size();
+        int top = AllPlayer[CardDesk.TOP].GetHandCards().size();
+        int left = AllPlayer[CardDesk.LEFT].GetHandCards().size();
+
+        int[] ScoreResult = ScoreCalculator.GetFinalScore(self,right,top,left);
+        List<ScoreItem> result = new ArrayList<>();
+        for (int i = 0; i < 4; i++)
+        {
+            String NickName = AllPlayer[i].getPlayerInformation().getNickName();
+            int TotalScore = AllPlayer[i].getPlayerInformation().getTotalScore() + ScoreResult[i];
+            result.add(new ScoreItem(NickName,ScoreResult[i],TotalScore));
+        }
+
+        ScoreItemAdapter adapter = new ScoreItemAdapter(result);
+        ScoreBoardItem.setLayoutManager(ScoreBoardLayoutManager);
+        ScoreBoardItem.setAdapter(adapter);
+
+
+        // 将数据以对话框的形式显示
+
+        HintScoreBoardDialog =  new GameDialogNew.Builder()
+                .with(HostGameActivity)
+                .setTitle("游戏结束")
+                .setPositiveButton("继续游戏",(v) -> {
+                    NewCompetition(mTogetherPlayer,AllPlayer[0]);
+                })
+                .setNegativeButton("返回菜单",(v) -> HostGameActivity.finish())
+                .Build(TotalScoreBoardView).Show();
+        // 持久化这些数据
+
     }
+
+    private void HandlePrepareNewCards(View view)
+    {
+        List[] cards = CardHelper.GetShuffledCardGroup();
+        for (int i = 0; i < 4; i++)
+        {
+            AllPlayer[i].InitSetHandCards(cards[i]);
+        }
+    }
+
 
     @Override
     public Handler GetMessageHandler() {

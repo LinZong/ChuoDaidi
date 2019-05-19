@@ -6,6 +6,7 @@ import com.nemesiss.chuodaidi.Game.Component.Card.Comparator.CardComparator;
 import com.nemesiss.chuodaidi.Game.Component.Card.Comparator.CardComparatorInFive;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class CardHelper
@@ -25,7 +26,6 @@ public class CardHelper
                 shuffle.add(new Card(Points[j], patterns[i]));
             }
         }
-
 
         Collections.shuffle(shuffle);
         return shuffle;

@@ -42,7 +42,6 @@ public class CardDeskMiddlewarePool
                 }
             }
         }
-
     }
 
     public boolean AddMiddleware(int MiddlewareType,BaseMiddleware middleware)

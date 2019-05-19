@@ -46,15 +46,15 @@ public class WelcomeActivity extends ChuoDaidiActivity
 
     public void ExpandSelectionFragmentArea()
     {
-        int begin = AppUtil.Dp2Px(200);
-        int end = AppUtil.Dp2Px(270);
-        AnimateWelcomeTitle.Animate(400,container,begin,end);
+//        int begin = AppUtil.Dp2Px(200);
+//        int end = AppUtil.Dp2Px(270);
+//        AnimateWelcomeTitle.Animate(400,container,begin,end);
     }
 
     public void ShrinkSelectionFragmentArea()
     {
-        int begin = AppUtil.Dp2Px(270);
-        int end = AppUtil.Dp2Px(200);
-        AnimateWelcomeTitle.Animate(400,container,begin,end);
+//        int begin = AppUtil.Dp2Px(270);
+//        int end = AppUtil.Dp2Px(200);
+//        AnimateWelcomeTitle.Animate(400,container,begin,end);
     }
 }
