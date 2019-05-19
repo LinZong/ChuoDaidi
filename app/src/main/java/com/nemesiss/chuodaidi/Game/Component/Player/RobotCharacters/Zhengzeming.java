@@ -1,13 +1,13 @@
 package com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters;
 
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 
-public class Zhengzeming extends BasePlayerInformation {
-    public String NickName = "郑泽明";
+public class Zhengzeming extends RobotPlayerInformation
+{
 
-    @Override
-    public String getNickName() {
-        return NickName;
+    public Zhengzeming() {
+        setNickName("郑泽明");
     }
 
     @Override

@@ -1,16 +1,14 @@
 package com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters;
 
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 
 
-public class HatsuneMiku extends BasePlayerInformation
+public class HatsuneMiku extends RobotPlayerInformation
 {
-    public String NickName = "初音ミク";
 
-    @Override
-    public String getNickName()
-    {
-        return NickName;
+    public HatsuneMiku() {
+        setNickName("初音ミク");
     }
 
     @Override

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="PlayerInformation"></dbname>
+    <version value="1"></version>
+
+    <list>
+        <mapping class="com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation"/>
+        <mapping class="com.nemesiss.chuodaidi.Game.Model.PlayerInfo.UserInformation"/>
+    </list>
+</litepal>

@@ -1,8 +1,10 @@
 package com.nemesiss.chuodaidi.Game.Model;
 
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+
 public class ScoreItem
 {
-    private String NickName;
+    private BasePlayerInformation player;
     private int DeltaScore;
     private int EndTotalScore;
 
@@ -11,16 +13,16 @@ public class ScoreItem
 
     }
 
-    public ScoreItem(String nickName, int deltaScore, int endTotalScore)
+    public ScoreItem(BasePlayerInformation target, int deltaScore, int endTotalScore)
     {
-        NickName = nickName;
+        player = target;
         DeltaScore = deltaScore;
         EndTotalScore = endTotalScore;
     }
 
-    public String getNickName()
+    public BasePlayerInformation getPlayer()
     {
-        return NickName;
+        return player;
     }
 
     public int getDeltaScore()
@@ -33,9 +35,9 @@ public class ScoreItem
         return EndTotalScore;
     }
 
-    public void setNickName(String nickName)
+    public void setPlayer(BasePlayerInformation tg)
     {
-        NickName = nickName;
+        player = tg;
     }
 
     public void setDeltaScore(int deltaScore)

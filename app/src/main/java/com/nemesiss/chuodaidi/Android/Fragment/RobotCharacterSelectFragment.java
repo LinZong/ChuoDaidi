@@ -16,6 +16,7 @@ import com.nemesiss.chuodaidi.Android.Adapter.RobotSelectionAdapter;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
 import com.nemesiss.chuodaidi.Android.View.BlackSpinner;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
+import com.nemesiss.chuodaidi.Game.Component.Helper.Persistence.Characters;
 import com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters.RobotCharactersExport;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.UserInformation;
@@ -94,7 +95,7 @@ public class RobotCharacterSelectFragment extends BaseGameFragment {
     @OnClick({R.id.ConfirmEnterGame})
     public void EnterGame(View v)
     {
-        UserInformation player = ChuoDaidiApplication.getPlayerInformation();
+        UserInformation player = Characters.GetPlayer();
         // 严格按照右，上，左的顺序传递数据
         Intent it = GameHelper.BuildRobotsPlayIntent(AttachedActivity,player,selectedRight,selectedTop,selectedLeft);
         AttachedActivity.startActivity(it);

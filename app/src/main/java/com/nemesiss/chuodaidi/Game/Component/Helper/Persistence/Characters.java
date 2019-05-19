@@ -1,78 +1,90 @@
 package com.nemesiss.chuodaidi.Game.Component.Helper.Persistence;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.nemesiss.chuodaidi.Android.Application.ChuoDaidiApplication;
+import com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters.HatsuneMiku;
+import com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters.RobotCharactersExport;
+import com.nemesiss.chuodaidi.Game.Component.Player.RobotPlayer;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.UserInformation;
+import com.nemesiss.chuodaidi.Game.Model.ScoreItem;
+import org.litepal.crud.DataSupport;
+import org.litepal.tablemanager.Connector;
+
+import java.util.List;
 
 public class Characters
 {
-    private static final String APPSETTING_RW_FLAG = "APPSETTING_RW_FLAG";
-
-    private static final String USERINFORMATION_RW_FLAG = "USERINFORMATION_RW_FLAG";
-
-    public static Context context;
-    public static SharedPreferences sharedPreferences;
-
-    static
+    public static void PrepareDatabases()
     {
-        context = ChuoDaidiApplication.getContext();
-        sharedPreferences = context.getSharedPreferences(APPSETTING_RW_FLAG, Context.MODE_PRIVATE);
-    }
-
-
-    public static UserInformation LoadUserInformation()
-    {
-        String val = sharedPreferences.getString(USERINFORMATION_RW_FLAG,null);
-        if(TextUtils.isEmpty(val)) {
-            return new UserInformation();
-        }
-        UserInformation model = new Gson().fromJson(val,UserInformation.class);
-        return model;
-    }
-
-    public static void SaveUserInformation(UserInformation NewInformation)
-    {
-        ChuoDaidiApplication.setPlayerInformation(NewInformation);
-        String serialize = new Gson().toJson(NewInformation,UserInformation.class);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USERINFORMATION_RW_FLAG,serialize);
-        editor.apply();
-    }
-
-    public static BasePlayerInformation GetRobotInformation(String nickname,Class< ? extends BasePlayerInformation> robotClazz)
-    {
-        String clazzName = robotClazz.getSimpleName();
-        String jsonVal = sharedPreferences.getString(nickname,null);
-        if(!TextUtils.isEmpty(jsonVal))
+        SQLiteDatabase db = Connector.getDatabase();
+        List<RobotPlayerInformation> list = DataSupport.findAll(RobotPlayerInformation.class);
+        if(list.isEmpty())
         {
-            return new Gson().fromJson(jsonVal,robotClazz);
-        }
-        else {
-            try
-            {
-                BasePlayerInformation createdInfo = robotClazz.newInstance();
-                SaveRobotInformation(createdInfo);
-                return createdInfo;
-            } catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
-            } catch (InstantiationException e)
-            {
-                e.printStackTrace();
+            RobotPlayerInformation[] robots = RobotCharactersExport.AllRobotCharacters;
+
+
+            for (int i = 0; i < robots.length; i++) {
+                ContentValues cv = new ContentValues();
+                cv.put("nickName",robots[i].getNickName());
+                cv.put("totalScore",robots[i].getTotalScore());
+                cv.put("FLAG",robots[i].getFLAG());
+                db.insert("RobotPlayerInformation".toLowerCase(),null,cv);
             }
         }
-        return null;
+
+        UserInformation player = Characters.GetPlayer();
+        if(player == null) {
+            player = new UserInformation();
+            player.save();
+        }
+
     }
 
-    public static void SaveRobotInformation(BasePlayerInformation robots)
+    public static List<RobotPlayerInformation> GetAllRobots()
     {
-        String serialize = new Gson().toJson(robots,robots.getClass());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(robots.getNickName(),serialize);
-        editor.apply();
+        return DataSupport.findAll(RobotPlayerInformation.class);
+    }
+    public static RobotPlayerInformation GetRobot(String RobotBaseNickName)
+    {
+        return DataSupport.where("NickName",RobotBaseNickName).findFirst(RobotPlayerInformation.class);
+    }
+    public static void UpdateRobot(RobotPlayerInformation update)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put("nickName",update.getNickName());
+        cv.put("totalScore",update.getTotalScore());
+        cv.put("FLAG",update.getFLAG());
+        DataSupport.update(RobotPlayerInformation.class,cv,update.getId());
+    }
+
+    public static UserInformation GetPlayer()
+    {
+        return DataSupport.findFirst(UserInformation.class);
+    }
+
+    public static void UpdatePlayer(UserInformation player)
+    {
+        player.save();
+    }
+
+    public static void UpdatePlayerScores(List<ScoreItem> ThisTurnScore) {
+        for (ScoreItem scoreItem : ThisTurnScore) {
+            BasePlayerInformation bi = scoreItem.getPlayer();
+            if(bi instanceof RobotPlayerInformation) {
+                bi.setTotalScore(scoreItem.getEndTotalScore());
+                UpdateRobot((RobotPlayerInformation) bi);
+            }
+            else if(bi instanceof UserInformation) {
+                bi.setTotalScore(scoreItem.getEndTotalScore());
+                UpdatePlayer((UserInformation) bi);
+            }
+        }
     }
 }

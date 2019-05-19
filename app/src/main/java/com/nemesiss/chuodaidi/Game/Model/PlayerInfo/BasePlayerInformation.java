@@ -1,16 +1,27 @@
 package com.nemesiss.chuodaidi.Game.Model.PlayerInfo;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 
-public class BasePlayerInformation implements Serializable
+public class BasePlayerInformation extends DataSupport implements Serializable
 {
-    protected String NickName;
-    protected int TotalScore = 3000;
+    public int Id;
+    public String NickName;
+    public int TotalScore = 3000;
 
     public BasePlayerInformation() {
         if(NickName == null) {
             NickName = this.getClass().getSimpleName();
         }
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getNickName()

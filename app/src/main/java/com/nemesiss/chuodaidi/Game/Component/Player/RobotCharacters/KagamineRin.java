@@ -1,16 +1,12 @@
 package com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters;
 
-import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 
-public class KagamineRin extends BasePlayerInformation {
+public class KagamineRin extends RobotPlayerInformation {
 
 
-    public String NickName = "鏡音リン";
-
-    @Override
-    public String getNickName()
-    {
-        return NickName;
+    public KagamineRin() {
+        setNickName("鏡音リン");
     }
 
     @Override

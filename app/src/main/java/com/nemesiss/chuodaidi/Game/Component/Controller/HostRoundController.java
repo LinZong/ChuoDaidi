@@ -14,11 +14,13 @@ import com.nemesiss.chuodaidi.Android.Adapter.ScoreItemAdapter;
 import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
 import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
 import com.nemesiss.chuodaidi.Game.Component.Card.Score.ScoreCalculator;
+import com.nemesiss.chuodaidi.Game.Component.Helper.Persistence.Characters;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Android.View.CountDownTextView;
 import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Model.Card;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
 import com.nemesiss.chuodaidi.Game.Model.ScoreItem;
 import com.nemesiss.chuodaidi.R;
 
@@ -236,8 +238,8 @@ public class HostRoundController implements BaseRoundController {
         GameCardDesk.NewCompetition(Self,TogetherPlayer);
         FirstTurn = NextTurn = JudgeFirstTurnPlayer();
         // 开始轮转
-        //TakeTurn();
-        HandleGameSettle(1);
+        TakeTurn();
+        //HandleGameSettle(1);
     }
 
     @Override
@@ -278,9 +280,9 @@ public class HostRoundController implements BaseRoundController {
         List<ScoreItem> result = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
-            String NickName = AllPlayer[i].getPlayerInformation().getNickName();
+            BasePlayerInformation pi = AllPlayer[i].getPlayerInformation();
             int TotalScore = AllPlayer[i].getPlayerInformation().getTotalScore() + ScoreResult[i];
-            result.add(new ScoreItem(NickName,ScoreResult[i],TotalScore));
+            result.add(new ScoreItem(pi,ScoreResult[i],TotalScore));
         }
 
         ScoreItemAdapter adapter = new ScoreItemAdapter(result);
@@ -299,6 +301,10 @@ public class HostRoundController implements BaseRoundController {
                 .setNegativeButton("返回菜单",(v) -> HostGameActivity.finish())
                 .Build(TotalScoreBoardView).Show();
         // 持久化这些数据
+
+        new Thread(() -> {
+            Characters.UpdatePlayerScores(result);
+        }).start();
 
     }
 

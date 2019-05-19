@@ -1,16 +1,11 @@
 package com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters;
 
-import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 
-public class Caixukun extends BasePlayerInformation {
-    public String NickName = "蔡徐坤";
-
-    @Override
-    public String getNickName()
-    {
-        return NickName;
+public class Caixukun extends RobotPlayerInformation {
+    public Caixukun() {
+        setNickName("蔡徐坤");
     }
-
     @Override
     public int getTotalScore()
     {
