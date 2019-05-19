@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Nemesiss'
+            keyPassword 'lznb008828'
+            storeFile file('../BuildSignature/Nemesiss.jks')
+            storePassword 'lznb008828'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.nemesiss.chuodaidi"
@@ -14,6 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     dataBinding {
@@ -26,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:28.0.0'
@@ -35,7 +47,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.github.ikidou:FragmentBackHandler:2.1'
-
     implementation 'io.reactivex:rxjava:1.1.0'
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
@@ -43,9 +54,7 @@ dependencies {
     implementation 'top.zibin:Luban:1.1.8'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'org.jetbrains:annotations:15.0'
-
-
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
