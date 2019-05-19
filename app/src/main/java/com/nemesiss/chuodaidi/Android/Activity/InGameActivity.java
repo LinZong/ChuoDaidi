@@ -6,6 +6,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
 import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
+import com.nemesiss.chuodaidi.Game.Component.Card.Score.ScoreCalculator;
 import com.nemesiss.chuodaidi.Game.Component.Helper.Persistence.Characters;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
@@ -121,7 +122,10 @@ public class InGameActivity extends ChuoDaidiActivity
                 .with(this)
                 .setTitle("中途离开游戏")
                 .setText("注意!中途退出游戏将会受到严厉的惩罚!确定要中途退出吗?")
-                .setPositiveButton("确定",(v) -> finish())
+                .setPositiveButton("确定",(v) -> {
+                    ScoreCalculator.Penalty();
+                    finish();
+                })
                 .setNegativeButton("取消",null)
                 .Build()
                 .Show();
