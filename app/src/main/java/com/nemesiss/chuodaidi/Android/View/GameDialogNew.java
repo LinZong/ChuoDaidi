@@ -82,6 +82,8 @@ public class GameDialogNew extends PopupWindow {
         private View.OnClickListener dialogPositiveBtnOnClick;
         private View.OnClickListener dialogNegativeBtnOnClick;
 
+        private int DialogMaxHeight = -1;
+
         private GameDialogNew instance;
 
         public Builder with(Activity ctx)
@@ -159,6 +161,19 @@ public class GameDialogNew extends PopupWindow {
             innerLayout.removeAllViews();
 
             innerLayout.addView(view);
+
+            innerLayout.post(() -> {
+                DialogMaxHeight = innerLayout.getHeight();
+            });
+
+            view.post( () -> {
+                int vh = view.getHeight();
+                if(vh > DialogMaxHeight) {
+                    ViewGroup.LayoutParams lp = view.getLayoutParams();
+                    lp.height = DialogMaxHeight;
+                    view.setLayoutParams(lp);
+                }
+            });
 
             instance = new GameDialogNew(getContext(),layout);
 

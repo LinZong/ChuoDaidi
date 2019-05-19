@@ -239,7 +239,7 @@ public class HostRoundController implements BaseRoundController {
         FirstTurn = NextTurn = JudgeFirstTurnPlayer();
         // 开始轮转
         TakeTurn();
-        //HandleGameSettle(1);
+       //HandleGameSettle(1);
     }
 
     @Override

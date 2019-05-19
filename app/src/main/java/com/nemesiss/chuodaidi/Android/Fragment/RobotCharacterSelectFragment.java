@@ -19,6 +19,7 @@ import com.nemesiss.chuodaidi.Game.Component.Helper.GameHelper;
 import com.nemesiss.chuodaidi.Game.Component.Helper.Persistence.Characters;
 import com.nemesiss.chuodaidi.Game.Component.Player.RobotCharacters.RobotCharactersExport;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.UserInformation;
 import com.nemesiss.chuodaidi.R;
 
@@ -50,7 +51,8 @@ public class RobotCharacterSelectFragment extends BaseGameFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.select_three_robots_frag,container,false);
         unbinder = ButterKnife.bind(this,view);
-        robotPlayers = Arrays.asList(RobotCharactersExport.AllRobotCharacters);
+        robotPlayers = (List) Characters.GetAllRobots();
+
         InitRobotsPlayerSelection();
         LoadRobotsPlayerSelection();
         return view;
@@ -61,7 +63,6 @@ public class RobotCharacterSelectFragment extends BaseGameFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        AttachedActivity.ShrinkSelectionFragmentArea();
     }
 
     private void InitRobotsPlayerSelection()
@@ -98,6 +99,7 @@ public class RobotCharacterSelectFragment extends BaseGameFragment {
         UserInformation player = Characters.GetPlayer();
         // 严格按照右，上，左的顺序传递数据
         Intent it = GameHelper.BuildRobotsPlayIntent(AttachedActivity,player,selectedRight,selectedTop,selectedLeft);
+
         AttachedActivity.startActivity(it);
     }
 

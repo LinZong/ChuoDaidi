@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="item" type="com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation"/>
+    </data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content"
+                                                 android:background="#000"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+        <TextView android:layout_width="0dp"
+                  android:layout_height="17dp"
+                  android:textColor="#fff"
+                  android:text="@{item.nickName}"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:layout_marginStart="8dp"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  android:id="@+id/RankingItem_UserNickName"
+                  app:layout_constraintEnd_toStartOf="@+id/guideline33344"
+                  android:layout_marginEnd="8dp"
+                  app:layout_constraintHorizontal_bias="0.0"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="#fff"
+                  android:text='@{""+item.totalScore}'
+                  android:gravity="center_horizontal"
+                  app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                  android:id="@+id/Ranking_TotalScore"
+                  app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+                  app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                  app:layout_constraintStart_toStartOf="@+id/guideline33344" android:layout_marginStart="8dp"
+                  app:layout_constraintHorizontal_bias="0.92"/>
+        <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                              android:id="@+id/guideline33344" app:layout_constraintGuide_begin="180dp"
+                                              android:orientation="vertical"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

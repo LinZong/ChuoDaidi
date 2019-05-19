@@ -58,9 +58,7 @@ public class Characters
     public static void UpdateRobot(RobotPlayerInformation update)
     {
         ContentValues cv = new ContentValues();
-        cv.put("nickName",update.getNickName());
         cv.put("totalScore",update.getTotalScore());
-        cv.put("FLAG",update.getFLAG());
         DataSupport.update(RobotPlayerInformation.class,cv,update.getId());
     }
 
@@ -71,7 +69,9 @@ public class Characters
 
     public static void UpdatePlayer(UserInformation player)
     {
-        player.save();
+        ContentValues cv = new ContentValues();
+        cv.put("totalScore",player.getTotalScore());
+        DataSupport.update(UserInformation.class,cv,player.getId());
     }
 
     public static void UpdatePlayerScores(List<ScoreItem> ThisTurnScore) {

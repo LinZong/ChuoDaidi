@@ -53,7 +53,6 @@ public class PlayerTypeFragment extends BaseGameFragment
     public void PlayWithRobots()
     {
         AppUtil.LoadFragmentToActivity(AttachedActivity,R.id.WelcomeFuncFragmentContainer,new RobotCharacterSelectFragment());
-        AttachedActivity.ExpandSelectionFragmentArea();
     }
 
 

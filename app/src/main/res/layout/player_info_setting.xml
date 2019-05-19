@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="user" type="com.nemesiss.chuodaidi.Game.Model.ObservableModel.UserNickNameObservable"/>
+    </data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content"
+                                                 android:background="#000"
+    >
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="玩家昵称:"
+                  style="@style/WelcomeTextViewStyle"
+                  app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="12dp"
+                  app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="12dp"
+                  app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="10dp"
+                  android:id="@+id/textView8"/>
+        <EditText
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:textColor="#fff"
+                android:text="@={user.NickName}"
+                android:lines="1"
+                android:ellipsize="end"
+                android:background="@drawable/spinner_bg"
+                android:id="@+id/Setting_NickName"
+                app:layout_constraintStart_toEndOf="@+id/textView8" android:layout_marginStart="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="10dp"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

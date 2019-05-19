@@ -6,6 +6,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.nemesiss.chuodaidi.Android.View.GameDialogNew;
 import com.nemesiss.chuodaidi.Game.Component.Card.CardHelper;
+import com.nemesiss.chuodaidi.Game.Component.Helper.Persistence.Characters;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDesk;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Controller.HostRoundController;
@@ -14,6 +15,7 @@ import com.nemesiss.chuodaidi.Game.Component.Player.Player;
 import com.nemesiss.chuodaidi.Game.Component.Player.RobotPlayer;
 import com.nemesiss.chuodaidi.Game.Model.Card;
 import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.BasePlayerInformation;
+import com.nemesiss.chuodaidi.Game.Model.PlayerInfo.RobotPlayerInformation;
 import com.nemesiss.chuodaidi.R;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class InGameActivity extends ChuoDaidiActivity
         int gameType = getIntent().getIntExtra(BaseRoundController.GAME_TYPE, -1);
 
         InGamePlayers = (BasePlayerInformation[]) getIntent().getSerializableExtra(BaseRoundController.PLAYER_INFO);
+
 
         switch (controllerType)
         {
@@ -103,7 +106,6 @@ public class InGameActivity extends ChuoDaidiActivity
                 roundController.NewCompetition(FakeRobots,self);
             });
         });
-
     }
 
     private void PrepareRemotePlayersCompetition()
@@ -120,7 +122,7 @@ public class InGameActivity extends ChuoDaidiActivity
                 .setTitle("中途离开游戏")
                 .setText("注意!中途退出游戏将会受到严厉的惩罚!确定要中途退出吗?")
                 .setPositiveButton("确定",(v) -> finish())
-                .setNegativeButton("取消",(v) -> {})
+                .setNegativeButton("取消",null)
                 .Build()
                 .Show();
     }

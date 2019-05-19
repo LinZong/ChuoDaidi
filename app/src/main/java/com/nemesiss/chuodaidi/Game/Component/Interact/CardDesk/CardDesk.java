@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.nemesiss.chuodaidi.Android.Utils.AppUtil;
 import com.nemesiss.chuodaidi.Android.Utils.EventProxy;
 import com.nemesiss.chuodaidi.Android.View.ViewProcess.RoundImageTransform;
+import com.nemesiss.chuodaidi.Game.Component.Card.CardTypeValidator.PlayerNotShownCardValidator;
 import com.nemesiss.chuodaidi.Game.Component.Card.CardTypeValidator.PlayerShownCardValidator;
 import com.nemesiss.chuodaidi.Game.Component.Controller.BaseRoundController;
 import com.nemesiss.chuodaidi.Game.Component.Interact.CardDesk.CardDeskMiddleware.BaseMiddleware;
@@ -168,6 +169,9 @@ public class CardDesk extends ConstraintLayout
 
         middlewarePool.AddMiddleware(MiddlewareType.BEFORE_SHOW_CARD,new PlayerShownCardValidator());
 
+        middlewarePool.AddMiddleware(MiddlewareType.NOT_SHOW_CARD,new PlayerNotShownCardValidator());
+
+
         middlewarePool.SetEndupMiddleware(MiddlewareType.BEFORE_SHOW_CARD, new BaseMiddleware() {
             @Override
             public void Handle(CardDesk deskSelf, Context context, CardDeskMiddlewarePool.MiddlewarePipeInterceptor nextTrigger) {
@@ -175,6 +179,17 @@ public class CardDesk extends ConstraintLayout
                 nextTrigger.next();
             }
         });
+
+        middlewarePool.SetEndupMiddleware(MiddlewareType.NOT_SHOW_CARD, new BaseMiddleware()
+        {
+            @Override
+            public void Handle(CardDesk deskSelf, Context context, CardDeskMiddlewarePool.MiddlewarePipeInterceptor nextTrigger)
+            {
+                ShowNoCards(Self);
+                nextTrigger.next();
+            }
+        });
+
     }
 
     public boolean AddMiddleware(int MiddlewareType,BaseMiddleware middleware) {
@@ -260,7 +275,8 @@ public class CardDesk extends ConstraintLayout
                 middlewarePool.ExecuteMiddlewares(MiddlewareType.BEFORE_SHOW_CARD));
 
         PassCard.setOnClickListener((v) ->
-                ShowNoCards(Self));
+                middlewarePool.ExecuteMiddlewares(MiddlewareType.NOT_SHOW_CARD)
+                );
 
         PokeCollections = new LinearLayout[4];
         ShowPokeCollections = new LinearLayout[4];

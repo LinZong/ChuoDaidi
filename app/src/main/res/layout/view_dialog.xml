@@ -32,10 +32,10 @@
               app:layout_constraintEnd_toEndOf="parent"/>
         <View android:layout_width="match_parent" android:layout_height="2dp"
               android:background="@android:color/white"
-              android:layout_marginBottom="60dp"
-              app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/view2"
+              android:id="@+id/view2"
               app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
+              app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="54dp"/>
         <Button
                 android:textSize="16sp"
                 style="@style/WelcomeButtonStyle"
@@ -45,7 +45,8 @@
                 android:id="@+id/Dialog_PositiveBtn"
                 app:layout_constraintStart_toEndOf="@+id/Dialog_NegativeBtn" app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/Dialog_NegativeBtn"/>
+                app:layout_constraintBottom_toBottomOf="@+id/Dialog_NegativeBtn"
+                app:layout_constraintTop_toBottomOf="@+id/view2" app:layout_constraintVertical_bias="1.0"/>
         <Button
                 android:textSize="16sp"
                 style="@style/WelcomeButtonStyle"
@@ -57,7 +58,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toStartOf="@+id/Dialog_PositiveBtn"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/view2"/>
-        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content"
+        <FrameLayout android:layout_width="0dp"
+                     android:layout_height="wrap_content"
                      android:minHeight="100dp"
                      android:id="@+id/Dialog_InnerView"
                      android:gravity="center_vertical"
@@ -65,6 +67,7 @@
                      android:layout_marginStart="10dp" android:layout_marginTop="8dp"
                      app:layout_constraintEnd_toEndOf="parent"
                      android:layout_marginEnd="10dp" android:layout_marginBottom="8dp"
-                     app:layout_constraintBottom_toTopOf="@+id/view2" app:layout_constraintVertical_bias="0.0"/>
+                     app:layout_constraintBottom_toTopOf="@+id/view2" app:layout_constraintVertical_bias="0.0">
+        </FrameLayout>
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

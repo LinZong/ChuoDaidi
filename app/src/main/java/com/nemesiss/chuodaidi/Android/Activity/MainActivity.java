@@ -29,22 +29,4 @@ public class MainActivity extends ChuoDaidiActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
-
-
-    @OnClick({R.id.QueryAll})
-    public void QueryAll(View v)
-    {
-        List<RobotPlayerInformation> robots =  Characters.GetAllRobots();
-        for (RobotPlayerInformation robot : robots) {
-            Log.d("MainActivity",robot.getNickName());
-        }
-    }
-
-    @OnClick({R.id.QueryPlayer})
-    public void QueryPlayer(View vi)
-    {
-        UserInformation player = Characters.GetPlayer();
-        Log.d("MainActivity",player.getNickName());
-    }
-
 }
