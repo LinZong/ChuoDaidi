@@ -302,6 +302,8 @@ public class HostRoundController implements BaseRoundController {
                 .Build(TotalScoreBoardView).Show();
         // 持久化这些数据
 
+        HintScoreBoardDialog.setOutsideTouchable(false);
+
         new Thread(() -> {
             Characters.UpdatePlayerScores(result);
         }).start();
